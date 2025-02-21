@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    name: Build Docker image
+    name: Images
     runs-on: ubuntu-24.04
     strategy:
       matrix:

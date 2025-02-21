@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   super-linter:
-    name: Super Linter
+    name: All
     uses: harryzcy/github-actions/.github/workflows/linter.yml@main
 
   spelling:
