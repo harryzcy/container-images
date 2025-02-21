@@ -12,6 +12,9 @@ RUN yarn build:app:docker
 
 FROM nginx:1.27.4@sha256:91734281c0ebfc6f1aea979cffeed5079cfe786228a71cc6f1f46a228cde6e34
 
-COPY --from=build /excalidraw/build /usr/share/nginx/html
+RUN addgroup --system nonroot && useradd --system nonroot -g nonroot
+USER nonroot
+
+COPY --from=build --chown=nonroot:nonroot /excalidraw/build /usr/share/nginx/html
 
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost || exit 1
