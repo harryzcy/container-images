@@ -7,7 +7,6 @@ WORKDIR /excalidraw
 
 RUN yarn --ignore-optional --network-timeout 600000
 
-# ARG NODE_ENV=production
 RUN yarn build:app:docker
 
 FROM nginx:1.27.4@sha256:9d6b58feebd2dbd3c56ab5853333d627cc6e281011cfd6050fa4bcf2072c9496
