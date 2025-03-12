@@ -1,4 +1,4 @@
-FROM node:22.14.0-bookworm AS build
+FROM node:22.14.0-bookworm@sha256:f6b9c31ace05502dd98ef777aaa20464362435dcc5e312b0e213121dcf7d8b95 AS build
 
 ARG VERSION=v0.17.3
 RUN git clone --depth 1 --branch ${VERSION} https://github.com/excalidraw/excalidraw.git
