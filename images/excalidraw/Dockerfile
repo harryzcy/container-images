@@ -5,7 +5,7 @@ RUN git clone --depth 1 --branch ${VERSION} https://github.com/excalidraw/excali
 
 WORKDIR /excalidraw
 
-RUN yarn --ignore-optional --network-timeout 600000
+RUN yarn --network-timeout 600000
 
 RUN yarn build:app:docker
 
