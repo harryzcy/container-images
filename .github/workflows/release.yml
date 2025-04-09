@@ -22,7 +22,9 @@ jobs:
           - excalidraw
           - pypiserver
     outputs:
+      excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
       pypiserver_changed: ${{ steps.check.outputs.pypiserver_changed }}
+      sally_changed: ${{ steps.check.outputs.sally_changed }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
