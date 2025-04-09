@@ -39,7 +39,7 @@ jobs:
         run: |
           docker create --name info ${{ matrix.image }}
           docker cp info:/VERSION VERSION
-          version=$(cat /VERSION)
+          version=$(cat VERSION)
           if [ -z "$version" ]; then
             echo "VERSION file not found in image"
             exit 1
