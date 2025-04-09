@@ -35,6 +35,11 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ matrix.image }} images/${{ matrix.image }}
 
+      - name: Get version
+        run: |
+          version=$(docker run --rm --entrypoint cat ${{ matrix.image }} /VERSION)
+          echo "version=${version}"
+
   summary:
     name: Assert all builds succeeded
     runs-on: ubuntu-24.04
