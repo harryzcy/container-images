@@ -12,6 +12,8 @@ jobs:
   release:
     name: Release Docker images
     runs-on: ubuntu-24.04
+    permissions:
+      packages: write
     strategy:
       matrix:
         image:
