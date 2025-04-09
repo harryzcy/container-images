@@ -57,7 +57,7 @@ jobs:
       - name: Check directory changed between revisions
         id: check
         run: |
-          git diff --quiet --exit-code ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }}
+          git diff --quiet ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }}
           if [ $? -ne 0 ]; then
             echo "Directory images/${{ matrix.image }} changed between revisions"
             echo "changed=true" >> $GITHUB_OUTPUT
