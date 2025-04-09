@@ -36,9 +36,10 @@ jobs:
         run: docker build -t ${{ matrix.image }} images/${{ matrix.image }}
 
       - name: Get version
-        continue-on-error: true
         run: |
-          version=$(docker run --rm --entrypoint cat ${{ matrix.image }} /VERSION)
+          docker create --name info ${{ matrix.image }}
+          docker cp info:/VERSION VERSION
+          version=$(cat /VERSION)
           if [ -z "$version" ]; then
             echo "VERSION file not found in image"
             exit 1
