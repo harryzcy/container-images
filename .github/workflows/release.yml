@@ -41,6 +41,7 @@ jobs:
         with:
           context: images/${{ matrix.image }}
           push: false
+          load: true
           tags: pypiserver:info
 
       - name: Get version
