@@ -19,6 +19,8 @@ jobs:
       matrix:
         image:
           - pypiserver
+    outputs:
+      pypiserver_changed: ${{ steps.check.outputs.pypiserver_changed }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
@@ -63,7 +65,7 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "Directory images/${{ matrix.image }} did not change between revisions"
-            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "${{ matrix.image }}_changed=false" >> $GITHUB_OUTPUT
           fi
 
   release:
@@ -128,7 +130,7 @@ jobs:
         with:
           context: images/${{ matrix.image }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: ${{ github.event_name == 'push' }}
+          push: ${{ github.event_name == 'push' && needs.pre-check.outputs.pypiserver_changed == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
