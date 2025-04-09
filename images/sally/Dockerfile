@@ -8,7 +8,7 @@ FROM gcr.io/distroless/base:nonroot@sha256:fa5f94fa433728f8df3f63363ffc8dec4adcf
 
 COPY --from=builder --chown=nonroot:nonroot /go/bin/sally /bin/
 COPY --from=health --chown=nonroot:nonroot /bin/wget /bin/
-RUN echo "/bin/sally --version" > /VERSION
+RUN echo "1.6.0" > /VERSION
 
 USER nonroot:nonroot
 
