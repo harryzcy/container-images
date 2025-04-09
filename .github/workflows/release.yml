@@ -18,6 +18,7 @@ jobs:
     strategy:
       matrix:
         image:
+          - sally
           - excalidraw
           - pypiserver
     outputs:
@@ -86,6 +87,7 @@ jobs:
     strategy:
       matrix:
         image:
+          - sally
           - excalidraw
           - pypiserver
     steps:
@@ -114,7 +116,10 @@ jobs:
       - name: Get version
         id: version
         run: |
-          version=$(docker run --rm --entrypoint cat ${{ matrix.image }}:info /VERSION)
+          docker create --name info ${{ matrix.image }}:info
+          docker cp info:/VERSION VERSION
+          version=$(cat VERSION)
+          rm VERSION
           echo "version=${version}" >> $GITHUB_OUTPUT
 
       - name: Check if image directory changed
