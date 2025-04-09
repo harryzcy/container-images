@@ -20,9 +20,12 @@ FROM base
 WORKDIR /app
 
 RUN addgroup --system nonroot && adduser --system nonroot -G nonroot
-USER nonroot
 
 COPY --from=builder --chown=nonroot:nonroot /app /app
+
+RUN echo $(venv/bin/pypi-server --version) > /VERSION
+
+USER nonroot
 
 EXPOSE 8080
 HEALTHCHECK  --interval=5m --timeout=3s \
