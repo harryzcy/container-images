@@ -15,6 +15,10 @@ jobs:
   pre-check:
     name: Pre Check
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        image:
+          - pypiserver
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
@@ -25,6 +29,42 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0
+
+      - name: Get previous revision
+        id: previous
+        run: |
+          docker pull ghcr.io/harryzcy/pypiserver:latest
+          previous=$(docker inspect ghcr.io/harryzcy/pypiserver | jq '.[0]["Config"]["Labels"]["org.opencontainers.image.revision"]')
+          if [ -z "$previous" ]; then
+            echo "No previous revision found"
+            exit 1
+          fi
+          echo "previous=${previous}" >> $GITHUB_OUTPUT
+
+      - name: Get current revision
+        id: current
+        run: |
+          current=$(git rev-parse HEAD)
+          if [ -z "$current" ]; then
+            echo "No current revision found"
+            exit 1
+          fi
+          echo "current=${current}" >> $GITHUB_OUTPUT
+
+      - name: Check directory changed between revisions
+        id: check
+        run: |
+          git diff --quiet --exit-code ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }}
+          if [ $? -ne 0 ]; then
+            echo "Directory images/${{ matrix.image }} changed between revisions"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Directory images/${{ matrix.image }} did not change between revisions"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
 
   release:
     name: Release Docker images
