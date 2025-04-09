@@ -6,9 +6,11 @@ FROM busybox:1.37.0@sha256:37f7b378a29ceb4c551b1b5582e27747b855bbfaa73fa11914fe0
 
 FROM gcr.io/distroless/base:nonroot@sha256:fa5f94fa433728f8df3f63363ffc8dec4adcfb57e4d8c18b44bceccfea095ebc
 
-USER nonroot:nonroot
 COPY --from=builder --chown=nonroot:nonroot /go/bin/sally /bin/
 COPY --from=health --chown=nonroot:nonroot /bin/wget /bin/
+RUN echo "/bin/sally --version" > /VERSION
+
+USER nonroot:nonroot
 
 EXPOSE 8080
 HEALTHCHECK --interval=60s --timeout=30s --start-period=5s --retries=3 \
