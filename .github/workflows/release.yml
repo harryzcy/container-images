@@ -65,7 +65,7 @@ jobs:
         run: |
           git merge-base --is-ancestor ${{ steps.previous.outputs.previous }} HEAD || {
             echo "Previous revision is not an ancestor of current revision"
-            echo "Setting changed=true"
+            echo "Setting ${{ matrix.image }}_changed=true"
             echo "${{ matrix.image }}_changed=true" >> $GITHUB_OUTPUT
             exit 0
           }
