@@ -36,8 +36,8 @@ jobs:
       - name: Get previous revision
         id: previous
         run: |
-          docker pull ghcr.io/harryzcy/pypiserver:latest
-          previous=$(docker inspect ghcr.io/harryzcy/pypiserver | jq '.[0]["Config"]["Labels"]["org.opencontainers.image.revision"]')
+          docker pull ghcr.io/harryzcy/${{ matrix.image }}:latest
+          previous=$(docker inspect ghcr.io/harryzcy/${{ matrix.image }} | jq '.[0]["Config"]["Labels"]["org.opencontainers.image.revision"]')
           if [ -z "$previous" ]; then
             echo "No previous revision found"
             exit 1
