@@ -110,8 +110,8 @@ jobs:
       - name: Check if image directory changed
         id: check
         run: |
-          echo '${{ toJSON(needs.job1.outputs) }}'
-          changed=$(echo '${{ toJSON(needs.job1.outputs) }}' | jq -r '.${{ matrix.image }}_changed')
+          echo '${{ toJSON(needs.pre-check.outputs) }}'
+          changed=$(echo '${{ toJSON(needs.pre-check.outputs) }}' | jq -r '.${{ matrix.image }}_changed')
           echo "changed: $changed"
           echo "changed=${changed}" >> $GITHUB_OUTPUT
 
