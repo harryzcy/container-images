@@ -60,13 +60,17 @@ jobs:
       - name: Check directory changed between revisions
         id: check
         run: |
-          git diff --quiet ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }}
+          output=$(git diff --quiet ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }})
           if [ $? -ne 0 ]; then
             echo "Directory images/${{ matrix.image }} changed between revisions"
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "Directory images/${{ matrix.image }} did not change between revisions"
             echo "${{ matrix.image }}_changed=false" >> $GITHUB_OUTPUT
+          fi
+          if [ "$output" ~= "*bad object*" ]; then
+            echo "No previous revision found"
+            echo "${{ matrix.image }}_changed=true" >> $GITHUB_OUTPUT
           fi
 
   release:
