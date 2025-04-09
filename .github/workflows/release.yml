@@ -69,6 +69,7 @@ jobs:
   release:
     name: Release Docker images
     runs-on: ubuntu-24.04
+    needs: pre-check
     permissions:
       packages: write
     strategy:
