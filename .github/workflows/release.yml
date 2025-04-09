@@ -125,12 +125,20 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check if image directory changed
+        id: check
+        run: |
+          echo '${{ toJSON(needs.job1.outputs) }}'
+          changed=$(echo '${{ toJSON(needs.job1.outputs) }}' | jq -r '.${{ matrix.image }}_changed')
+          echo "changed: $changed"
+          echo "changed=${changed}" >> $GITHUB_OUTPUT
+
       - name: Build and push
         uses: docker/build-push-action@0adf9959216b96bec444f325f1e493d4aa344497 # v6.14.0
         with:
           context: images/${{ matrix.image }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: ${{ github.event_name == 'push' && needs.pre-check.outputs.pypiserver_changed == 'true' }}
+          push: ${{ github.event_name == 'push' && steps.check.outputs.changed == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
