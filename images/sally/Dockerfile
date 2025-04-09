@@ -1,6 +1,7 @@
 FROM golang:1.24.2@sha256:227d106dca555769db9977f33e5d3d27422c5e75af1afc080b92f390c326de80 AS builder
 
 RUN CGO_ENABLED=0 go install -ldflags="-w -s" go.uber.org/sally@v1.6.0
+RUN echo "v1.6.0" > /VERSION
 
 FROM busybox:1.37.0@sha256:37f7b378a29ceb4c551b1b5582e27747b855bbfaa73fa11914fe0df028dc581f AS health
 
@@ -8,7 +9,7 @@ FROM gcr.io/distroless/base:nonroot@sha256:fa5f94fa433728f8df3f63363ffc8dec4adcf
 
 COPY --from=builder --chown=nonroot:nonroot /go/bin/sally /bin/
 COPY --from=health --chown=nonroot:nonroot /bin/wget /bin/
-RUN echo "1.6.0" > /VERSION
+COPY --from=builder --chown=nonroot:nonroot /VERSION /VERSION
 
 USER nonroot:nonroot
 
