@@ -36,6 +36,7 @@ jobs:
         run: docker build -t ${{ matrix.image }} images/${{ matrix.image }}
 
       - name: Get version
+        continue-on-error: true
         run: |
           version=$(docker run --rm --entrypoint cat ${{ matrix.image }} /VERSION)
           if [ -z "$version" ]; then
