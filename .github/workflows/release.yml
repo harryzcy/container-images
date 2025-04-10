@@ -63,13 +63,6 @@ jobs:
       - name: Check directory changed between revisions
         id: check
         run: |
-          git merge-base --is-ancestor ${{ steps.previous.outputs.previous }} HEAD || {
-            echo "Previous revision is not an ancestor of current revision"
-            echo "Setting ${{ matrix.image }}_changed=true"
-            echo "${{ matrix.image }}_changed=true" >> $GITHUB_OUTPUT
-            exit 0
-          }
-
           output=$(git diff --quiet ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }})
           echo "$output"
           if [ $? -ne 0 ]; then
