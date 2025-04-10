@@ -65,7 +65,7 @@ jobs:
         run: |
           set +e
           output=$(git diff --quiet ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }})
-          status=$?
+          status="$?"
           echo "status: $status"
           echo "$output"
           if [ "$status" -ne 0 ]; then
