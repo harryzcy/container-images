@@ -60,6 +60,10 @@ jobs:
           fi
           echo "current=${current}" >> $GITHUB_OUTPUT
 
+      - name: Run diff
+        run: |
+          git diff --quiet ${{ steps.previous.outputs.previous }} ${{ steps.current.outputs.current }} -- images/${{ matrix.image }}
+
       - name: Check directory changed between revisions
         id: check
         run: |
