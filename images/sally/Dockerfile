@@ -1,4 +1,4 @@
-FROM golang:1.24.6@sha256:86a999d894563c27f3006e4c56f921b97c8a58a4bf45c8ecff71a7299ee9a09d AS builder
+FROM golang:1.24.6@sha256:746a0e918c6fe61aaab1bcc9fd42068ee808e63c052d34ac3c9c36e061abddf6 AS builder
 
 RUN CGO_ENABLED=0 go install -ldflags="-w -s" go.uber.org/sally@v1.6.0
 RUN echo "v1.6.0" > /VERSION
