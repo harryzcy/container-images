@@ -95,8 +95,6 @@ jobs:
           - excalidraw
           - pypiserver
           - sally
-        platforms:
-          - linux/amd64,linux/arm64,linux/arm/v7
         include:
           - image: resvg
             platforms: linux/amd64
@@ -162,7 +160,7 @@ jobs:
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: images/${{ matrix.image }}
-          platforms: ${{ github.event_name == 'push' && matrix.platforms || 'linux/amd64' }}
+          platforms: ${{ github.event_name == 'push' && (matrix.platforms || 'linux/amd64,linux/arm64,linux/arm/v7') || 'linux/amd64' }}
           push: ${{ github.event_name == 'push' && steps.check.outputs.changed == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
