@@ -48,7 +48,7 @@ jobs:
           previous=$(docker inspect ghcr.io/harryzcy/${{ matrix.image }} | jq '.[0]["Config"]["Labels"]["org.opencontainers.image.revision"]')
           if [ -z "$previous" ]; then
             echo "No previous revision found"
-            exit 1
+            previous="HEAD"
           fi
           echo "previous=${previous}" >> $GITHUB_OUTPUT
 
