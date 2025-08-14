@@ -44,7 +44,7 @@ jobs:
       - name: Get previous revision
         id: previous
         run: |
-          if [ -z "$(docker pull ghcr.io/harryzcy/${{ matrix.image }}:latest)" ]; then
+          if ! docker pull ghcr.io/harryzcy/${{ matrix.image }}:latest) 2>/dev/null; then
             echo "No previous image found, assuming first release"
             echo "previous=HEAD^" >> $GITHUB_OUTPUT
             exit 0
