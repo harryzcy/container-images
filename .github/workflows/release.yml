@@ -83,6 +83,7 @@ jobs:
     permissions:
       packages: write
     strategy:
+      fail-fast: false
       matrix:
         image:
           - excalidraw
