@@ -1,4 +1,4 @@
-FROM node:22.18.0-bookworm@sha256:5cc527147c43e671934c3530e9f66863162db5f57ce1ed0f227a3bb57b93cfab AS build
+FROM node:22.18.0-bookworm@sha256:58a260471ff760412efdd89afb30d1518f94295a7a7f5e62d3f6e436735d27f9 AS build
 
 ARG VERSION=v0.18.0
 RUN git clone --depth 1 --branch ${VERSION} https://github.com/excalidraw/excalidraw.git
@@ -9,7 +9,7 @@ RUN yarn --network-timeout 600000
 
 RUN yarn build:app:docker
 
-FROM nginx:1.29.0@sha256:c424bd04bb9d3dd358bfb73557283e38e00fa4ceee983c92be2a8ea4dac923df
+FROM nginx:1.29.1@sha256:96525dd60631052b9242df827dcc15f59f2bb209040fb01a98e9634f82398281
 
 RUN addgroup --system nonroot && useradd --system nonroot -g nonroot
 
