@@ -11,11 +11,11 @@ RUN curl -L "https://github.com/linebender/resvg/releases/download/$VERSION/resv
   && tar -xzf /tmp/resvg.tar.gz -C /bin/ \
   && rm /tmp/resvg.tar.gz
 
-FROM gcr.io/distroless/cc-debian12:nonroot
+FROM gcr.io/distroless/cc-debian12
+
+WORKDIR /workspace
 
 COPY --from=builder --chown=nonroot:nonroot /bin/resvg /bin/
 COPY --from=builder --chown=nonroot:nonroot /VERSION /VERSION
-
-USER nonroot:nonroot
 
 CMD ["/bin/resvg"]
