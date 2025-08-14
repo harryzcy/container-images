@@ -45,10 +45,15 @@ jobs:
         id: previous
         run: |
           docker pull ghcr.io/harryzcy/${{ matrix.image }}:latest
+          if [ $? -ne 0 ]; then
+            echo "No previous image found, assuming first release"
+            echo "previous=HEAD" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           previous=$(docker inspect ghcr.io/harryzcy/${{ matrix.image }} | jq '.[0]["Config"]["Labels"]["org.opencontainers.image.revision"]')
           if [ -z "$previous" ]; then
             echo "No previous revision found"
-            previous="HEAD"
+            exit 1
           fi
           echo "previous=${previous}" >> $GITHUB_OUTPUT
 
