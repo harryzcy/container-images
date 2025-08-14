@@ -18,12 +18,14 @@ jobs:
     strategy:
       matrix:
         image:
-          - sally
           - excalidraw
           - pypiserver
+          - resvg
+          - sally
     outputs:
       excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
       pypiserver_changed: ${{ steps.check.outputs.pypiserver_changed }}
+      resvg_changed: ${{ steps.check.outputs.resvg_changed }}
       sally_changed: ${{ steps.check.outputs.sally_changed }}
     steps:
       - name: Harden Runner
@@ -42,7 +44,11 @@ jobs:
       - name: Get previous revision
         id: previous
         run: |
-          docker pull ghcr.io/harryzcy/${{ matrix.image }}:latest
+          if ! docker pull ghcr.io/harryzcy/${{ matrix.image }}:latest 2>/dev/null; then
+            echo "No previous image found, assuming first release"
+            echo "previous=HEAD^" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           previous=$(docker inspect ghcr.io/harryzcy/${{ matrix.image }} | jq '.[0]["Config"]["Labels"]["org.opencontainers.image.revision"]')
           if [ -z "$previous" ]; then
             echo "No previous revision found"
@@ -86,9 +92,12 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - sally
           - excalidraw
           - pypiserver
+          - sally
+        include:
+          - image: resvg
+            platforms: linux/amd64
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -151,7 +160,7 @@ jobs:
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: images/${{ matrix.image }}
-          platforms: ${{ github.event_name == 'push' && 'linux/amd64,linux/arm64,linux/arm/v7' || 'linux/amd64' }}
+          platforms: ${{ github.event_name == 'push' && (matrix.platforms || 'linux/amd64,linux/arm64,linux/arm/v7') || 'linux/amd64' }}
           push: ${{ github.event_name == 'push' && steps.check.outputs.changed == 'true' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
