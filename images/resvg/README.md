@@ -5,5 +5,5 @@ Container image for [resvg](https://github.com/linebender/resvg)
 ## Usage
 
 ```shell
-docker run harryzcy/resvg
+docker run -it -v $(pwd):/workspace harryzcy/resvg input.svg output.png
 ```
