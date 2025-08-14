@@ -3,7 +3,7 @@ FROM debian:12.11 AS builder
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl tar ca-certificates
 
-ENV VERSION="v0.44.0"
+ENV VERSION="0.45.0"
 
 RUN echo "$VERSION" > /VERSION
 
