@@ -9,7 +9,7 @@ RUN yarn --network-timeout 600000
 
 RUN yarn build:app:docker
 
-FROM nginx:1.29.0@sha256:c424bd04bb9d3dd358bfb73557283e38e00fa4ceee983c92be2a8ea4dac923df
+FROM nginx:1.29.0@sha256:3ab4ed065a1437cbbd45e65617b1285bdf6523c6bf56a121e00df41720e09a89
 
 RUN addgroup --system nonroot && useradd --system nonroot -g nonroot
 
