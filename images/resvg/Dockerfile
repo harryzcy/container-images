@@ -13,6 +13,10 @@ RUN curl -L "https://github.com/linebender/resvg/releases/download/$VERSION/resv
 
 FROM gcr.io/distroless/cc-debian12
 
+#checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
+#checkov:skip=CKV_DOCKER_3: use root user for now
+#checkov:skip=CKV_DOCKER_7: latest
+
 WORKDIR /workspace
 
 COPY --from=builder --chown=nonroot:nonroot /bin/resvg /bin/
