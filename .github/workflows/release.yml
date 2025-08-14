@@ -158,14 +158,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set platforms (default)
-        if: ${{ github.event_name == 'pull_request'}}
-        run: echo "platforms=linux/amd64,linux/arm64,linux/arm/v7" >> $GITHUB_OUTPUT
-
-      - name: Set platforms (override)
-        if: ${{ matrix.platforms }}
-        run: echo "platforms=${{ matrix.platforms }}" >> $GITHUB_OUTPUT
-
       - name: Build and push
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
