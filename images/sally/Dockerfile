@@ -3,7 +3,7 @@ FROM golang:1.25.0@sha256:9e56f0d0f043a68bb8c47c819e47dc29f6e8f5129b8885bed9d43f
 RUN CGO_ENABLED=0 go install -ldflags="-w -s" go.uber.org/sally@v1.6.0
 RUN echo "v1.6.0" > /VERSION
 
-FROM busybox:1.37.0@sha256:f9a104fddb33220ec80fc45a4e606c74aadf1ef7a3832eb0b05be9e90cd61f5f AS health
+FROM busybox:1.37.0@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74 AS health
 
 FROM gcr.io/distroless/base:nonroot@sha256:b2404f60e475452152f15fba531fa6ed4b6d1d412498f36a127597673eeaf68f
 
