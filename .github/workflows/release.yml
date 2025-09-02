@@ -96,6 +96,7 @@ jobs:
           - excalidraw
           - pypiserver
           - sally
+          - wifi-card
         include:
           - image: resvg
             platforms: linux/amd64
