@@ -97,10 +97,11 @@ jobs:
           - excalidraw
           - pypiserver
           - sally
-          - wifi-card
         include:
           - image: resvg
             platforms: linux/amd64
+          - images: wifi-card
+            platforms: linux/amd64,linux/arm64
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
