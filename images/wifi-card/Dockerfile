@@ -5,7 +5,16 @@ RUN git clone --depth 1 https://github.com/bndw/wifi-card.git
 
 WORKDIR /wifi-card
 RUN git checkout fbde2cd27669ac29e1c0bc9393f9a83ffa93f8c6 && \
+  git rev-parse --short HEAD > /VERSION
   yarn && yarn build
 
 FROM nginx:1.29.1@sha256:33e0bbc7ca9ecf108140af6288c7c9d1ecc77548cbfd3952fd8466a75edefe57
-COPY --from=build /wifi-card/build /usr/share/nginx/html
+
+RUN addgroup --system nonroot && useradd --system nonroot -g nonroot
+
+USER nonroot
+
+COPY --from=build --chown=nonroot:nonroot /wifi-card/build /usr/share/nginx/html
+COPY --from=build --chown=nonroot:nonroot /VERSION /VERSION
+
+EXPOSE 80
