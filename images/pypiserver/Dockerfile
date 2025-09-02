@@ -31,6 +31,7 @@ COPY --from=health --chown=nonroot:nonroot /bin/wget /bin/
 RUN echo $(venv/bin/pypi-server --version) > /VERSION
 
 EXPOSE 8080
-HEALTHCHECK  --interval=5m --timeout=3s \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
 CMD ["venv/bin/pypi-server", "run", "-p", "8080", "/data/packages"]
