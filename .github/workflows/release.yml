@@ -28,6 +28,7 @@ jobs:
       pypiserver_changed: ${{ steps.check.outputs.pypiserver_changed }}
       resvg_changed: ${{ steps.check.outputs.resvg_changed }}
       sally_changed: ${{ steps.check.outputs.sally_changed }}
+      wifi-card_changed: ${{ steps.check.outputs.wifi-card_changed }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -136,7 +137,7 @@ jobs:
         id: check
         run: |
           echo '${{ toJSON(needs.pre-check.outputs) }}'
-          changed=$(echo '${{ toJSON(needs.pre-check.outputs) }}' | jq -r '.${{ matrix.image }}_changed')
+          changed=$(echo '${{ toJSON(needs.pre-check.outputs) }}' | jq -r '."${{ matrix.image }}_changed"')
           echo "changed: $changed"
           echo "changed=${changed}" >> $GITHUB_OUTPUT
 
