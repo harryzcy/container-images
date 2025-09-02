@@ -15,19 +15,24 @@ RUN python -m venv venv && \
   find venv -name "*.pyo" -exec rm -f {} \+ && \
   find venv -type d -name "__pycache__" -exec rm -r {} \+
 
+RUN echo $(venv/bin/pypi-server --version) > /VERSION
+
+FROM busybox:1.37.0@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74 AS health
+
 FROM base
 
 WORKDIR /app
 
 RUN addgroup --system nonroot && adduser --system nonroot -G nonroot
 
-COPY --from=builder --chown=nonroot:nonroot /app /app
-
-RUN echo $(venv/bin/pypi-server --version) > /VERSION
-
 USER nonroot
 
+COPY --from=builder --chown=nonroot:nonroot /app /app
+COPY --from=builder --chown=nonroot:nonroot /VERSION /VERSION
+COPY --from=health --chown=nonroot:nonroot /bin/wget /bin/
+
 EXPOSE 8080
-HEALTHCHECK  --interval=5m --timeout=3s \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
 CMD ["venv/bin/pypi-server", "run", "-p", "8080", "/data/packages"]
