@@ -1,7 +1,8 @@
 FROM node:22.19.0-bookworm@sha256:6fe286835c595e53cdafc4889e9eff903dd3008a3050c1675809148d8e0df805 AS build
 
 ARG VERSION=v0.18.0
-RUN git clone --depth 1 --branch ${VERSION} https://github.com/excalidraw/excalidraw.git
+RUN echo "${VERSION}" > /VERSION && \
+  git clone --depth 1 --branch ${VERSION} https://github.com/excalidraw/excalidraw.git
 
 WORKDIR /excalidraw
 
@@ -15,10 +16,8 @@ FROM ghcr.io/nginx/nginx-unprivileged:1.29.1@sha256:451ec1db67978686908d931cc090
 USER nginx
 
 COPY --from=build --chown=nginx:nginx /excalidraw/excalidraw-app/build /usr/share/nginx/html
+COPY --from=build --chown=nginx:nginx /VERSION /VERSION
 COPY --from=health --chown=nginx:nginx /bin/wget /bin/
-
-ARG VERSION=v0.18.0
-RUN echo "${VERSION}" > /VERSION
 
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
