@@ -1,4 +1,4 @@
-FROM node:24.7.0-bookworm@sha256:12affdc046489e63450191d69b5a093302f487eb140a2075022475f94dc39037 AS builder
+FROM node:24.8.0-bookworm@sha256:82a1d74c5988b72e839ac01c5bf0f7879a8ffd14ae40d7008016bca6ae12852b AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends git
 RUN git clone --depth 1 https://github.com/bndw/wifi-card.git
