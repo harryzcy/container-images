@@ -1,5 +1,7 @@
 FROM debian:13.1@sha256:833c135acfe9521d7a0035a296076f98c182c542a2b6b5a0fd7063d355d696be AS builder
 
+ARG TARGETPLATFORM
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl ca-certificates
 
@@ -7,9 +9,9 @@ ENV VERSION="2025.09.05"
 
 RUN echo "$VERSION" > /VERSION
 
-RUN if [ "$TARGETPLATFORM" == "linux/amd64" ]; then \
+RUN if [[ "$TARGETPLATFORM" == "linux/amd64" ]]; then \
   filename="yt-dlp_linux"; \
-  elif [ "$TARGETPLATFORM" == "linux/arm64" ]; then \
+  elif [[ "$TARGETPLATFORM" == "linux/arm64" ]]; then \
   filename="yt-dlp_linux_aarch64"; \
   else \
   echo "Unsupported platform: $TARGETPLATFORM" >&2; exit 1; \
