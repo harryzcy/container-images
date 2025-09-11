@@ -14,7 +14,8 @@ RUN if [ "$TARGETPLATFORM" ~= "linux/amd64" ]; then \
   else \
   echo "Unsupported platform: $TARGETPLATFORM" >&2; exit 1; \
   fi && \
-  curl -L "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/${filename}" -o /bin/yt-dlp
+  curl -L "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/${filename}" -o /bin/yt-dlp && \
+  chmod +x /bin/yt-dlp
 
 FROM gcr.io/distroless/base-nossl-debian12:nonroot
 
