@@ -1,6 +1,6 @@
 # yt-dlp
 
-Container image for [yt-dlp](https://github.com/linebender/yt-dlp)
+Container image for [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 
 ## Usage
 
