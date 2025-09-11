@@ -7,9 +7,9 @@ ENV VERSION="2025.09.05"
 
 RUN echo "$VERSION" > /VERSION
 
-RUN if [ "$TARGETPLATFORM" ~= "linux/amd64" ]; then \
+RUN if [ "$TARGETPLATFORM" == "linux/amd64" ]; then \
   filename="yt-dlp_linux"; \
-  elif [ "$TARGETPLATFORM" ~= "linux/arm64" ]; then \
+  elif [ "$TARGETPLATFORM" == "linux/arm64" ]; then \
   filename="yt-dlp_linux_aarch64"; \
   else \
   echo "Unsupported platform: $TARGETPLATFORM" >&2; exit 1; \
