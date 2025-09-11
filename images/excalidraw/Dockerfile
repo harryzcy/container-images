@@ -1,4 +1,4 @@
-FROM node:24.8.0-bookworm@sha256:82a1d74c5988b72e839ac01c5bf0f7879a8ffd14ae40d7008016bca6ae12852b AS build
+FROM node:22.19.0-bookworm@sha256:afff6d8c97964a438d2e6a9c96509367e45d8bf93f790ad561a1eaea926303d9 AS build
 
 ARG VERSION=v0.18.0
 RUN echo "${VERSION}" > /VERSION && \
