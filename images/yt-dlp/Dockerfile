@@ -7,7 +7,14 @@ ENV VERSION="2025.09.05"
 
 RUN echo "$VERSION" > /VERSION
 
-RUN curl -L "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/yt-dlp_linux" -o /bin/yt-dlp
+RUN if [ "$TARGETPLATFORM" ~= "linux/amd64" ]; then \
+  filename="yt-dlp_linux"; \
+  elif [ "$TARGETPLATFORM" ~= "linux/arm64" ]; then \
+  filename="yt-dlp_linux_aarch64"; \
+  else \
+  echo "Unsupported platform: $TARGETPLATFORM" >&2; exit 1; \
+  fi && \
+  curl -L "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/${filename}" -o /bin/yt-dlp
 
 FROM gcr.io/distroless/base-nossl-debian12:nonroot
 
