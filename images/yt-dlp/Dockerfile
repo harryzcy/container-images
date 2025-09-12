@@ -9,12 +9,12 @@ ENV VERSION="2025.09.05"
 
 RUN echo "$VERSION" > /VERSION
 
-RUN if [[ "$TARGETPLATFORM" == "linux/amd64"* ]]; then \
+RUN if [ "$TARGETARCH" == "linux/amd64"* ]; then \
   filename="yt-dlp_linux"; \
-  elif [[ "$TARGETPLATFORM" == "linux/arm64"* ]]; then \
+  elif [ "$TARGETARCH" == "linux/arm64"* ]; then \
   filename="yt-dlp_linux_aarch64"; \
   else \
-  echo "Unsupported platform: $TARGETPLATFORM" >&2; exit 1; \
+  echo "Unsupported architecture: $TARGETARCH" >&2; exit 1; \
   fi && \
   curl -L "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/${filename}" -o /bin/yt-dlp && \
   chmod +x /bin/yt-dlp
