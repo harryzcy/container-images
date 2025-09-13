@@ -3,6 +3,7 @@ FROM debian:13.1@sha256:833c135acfe9521d7a0035a296076f98c182c542a2b6b5a0fd7063d3
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl tar ca-certificates
 
+# renovate: datasource=github-tags depName=resvg packageName=linebender/resvg versioning=semver
 ENV VERSION="0.45.0"
 
 RUN echo "$VERSION" > /VERSION
