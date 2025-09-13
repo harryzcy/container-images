@@ -1,6 +1,7 @@
 FROM node:22.19.0-bookworm@sha256:afff6d8c97964a438d2e6a9c96509367e45d8bf93f790ad561a1eaea926303d9 AS build
 
-ARG VERSION=v0.18.0
+# renovate: datasource=github-tags depName=excalidraw packageName=excalidraw/excalidraw versioning=semver
+ENV VERSION="v0.18.0"
 RUN echo "${VERSION}" > /VERSION && \
   git clone --depth 1 --branch ${VERSION} https://github.com/excalidraw/excalidraw.git
 

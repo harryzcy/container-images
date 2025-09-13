@@ -5,6 +5,7 @@ ARG TARGETARCH
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl ca-certificates
 
+# renovate: datasource=github-tags depName=yt-dip packageName=yt-dlp/yt-dlp versioning=semver
 ENV VERSION="2025.09.05"
 
 RUN echo "$VERSION" > /VERSION

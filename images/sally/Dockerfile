@@ -1,7 +1,10 @@
 FROM golang:1.25.1@sha256:bb979b278ffb8d31c8b07336fd187ef8fafc8766ebeaece524304483ea137e96 AS builder
 
-RUN CGO_ENABLED=0 go install -ldflags="-w -s" go.uber.org/sally@v1.6.0
-RUN echo "v1.6.0" > /VERSION
+# renovate: datasource=github-tags depName=sally packageName=uber-go/sally versioning=semver
+ENV VERSION="v1.6.0"
+
+RUN CGO_ENABLED=0 go install -ldflags="-w -s" "go.uber.org/sally@${VERSION}"
+RUN echo "$VERSION" > /VERSION
 
 FROM busybox:1.37.0@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74 AS health
 
