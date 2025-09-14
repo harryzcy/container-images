@@ -1,10 +1,13 @@
 FROM node:24.8.0-bookworm@sha256:82a1d74c5988b72e839ac01c5bf0f7879a8ffd14ae40d7008016bca6ae12852b AS builder
 
+# renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card
+ENV VERSION="fbde2cd27669ac29e1c0bc9393f9a83ffa93f8c6"
+
 RUN apt-get update && apt-get install -y --no-install-recommends git
 RUN git clone --depth 1 https://github.com/bndw/wifi-card.git
 
 WORKDIR /wifi-card
-RUN git checkout fbde2cd27669ac29e1c0bc9393f9a83ffa93f8c6 && \
+RUN git checkout "${VERSION}" && \
   git rev-parse --short HEAD > /VERSION && \
   yarn && yarn build
 
