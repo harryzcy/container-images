@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   curl tar ca-certificates
 
 # renovate: datasource=github-tags depName=resvg packageName=linebender/resvg versioning=semver
-ENV VERSION="0.45.0"
+ENV VERSION="v0.45.1"
 
 RUN echo "$VERSION" > /VERSION
 
