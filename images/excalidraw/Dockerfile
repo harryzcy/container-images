@@ -10,7 +10,7 @@ WORKDIR /excalidraw
 RUN yarn --network-timeout 600000 && \
   yarn build:app:docker
 
-FROM busybox:1.37.0@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74 AS health
+FROM busybox:1.37.0@sha256:d82f458899c9696cb26a7c02d5568f81c8c8223f8661bb2a7988b269c8b9051e AS health
 
 FROM ghcr.io/nginx/nginx-unprivileged:1.29.1@sha256:3fbc5ad2c00a62a6c175e9a9a3b2de2b3011f3e5d005a091276620b34e1bae39
 
