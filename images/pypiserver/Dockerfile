@@ -5,9 +5,11 @@ FROM base AS builder
 WORKDIR /app
 
 COPY requirements.txt .
+COPY requirements-pip.txt .
 
 RUN python -m venv venv && \
-  venv/bin/pip install --no-cache-dir -U pip && \
+  # upgrade pip first, with hash check
+  venv/bin/pip install --no-cache-dir -U --require-hashes -r requirements-pip.txt && \
   venv/bin/pip install --no-cache-dir --require-hashes -r requirements.txt && \
   rm requirements.txt && \
   find venv -type d -a -name test -o -name tests -exec rm -rf '{}' \+ && \
