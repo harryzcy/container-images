@@ -47,7 +47,7 @@ RUN cd homebox/backend && go mod download
 RUN apk update && \
   apk upgrade && \
   apk add --no-cache git build-base gcc g++ && \
-  if [ "$TARGETARCH" != "arm" ] || [ "$TARGETARCH" != "riscv64" ]; then apk --no-cache add libwebp libavif libheif libjxl; fi
+  if [ "$TARGETARCH" != "arm" ]; then apk --no-cache add libwebp libavif libheif libjxl; fi
 
 # Clear old public files and copy new ones from frontend build
 RUN rm -rf ./app/api/public
@@ -76,7 +76,7 @@ ENV HBOX_DATABASE_SQLITE_PATH=/data/homebox.db?_pragma=busy_timeout=2000&_pragma
 
 # Install necessary runtime dependencies
 RUN apk --no-cache add ca-certificates wget && \
-  if [ "$TARGETARCH" != "arm" ] || [ "$TARGETARCH" != "riscv64" ]; then apk --no-cache add libwebp libavif libheif libjxl; fi
+  if [ "$TARGETARCH" != "arm" ]; then apk --no-cache add libwebp libavif libheif libjxl; fi
 
 RUN addgroup -g 65532 nonroot && adduser -u 65532 -G nonroot -S nonroot
 
