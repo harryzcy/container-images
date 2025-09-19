@@ -19,6 +19,7 @@ jobs:
       matrix:
         image:
           - excalidraw
+          - homebox
           - pypiserver
           - resvg
           - sally
@@ -26,6 +27,7 @@ jobs:
           - yt-dlp
     outputs:
       excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
+      homebox_changed: ${{ steps.check.outputs.homebox_changed }}
       pypiserver_changed: ${{ steps.check.outputs.pypiserver_changed }}
       resvg_changed: ${{ steps.check.outputs.resvg_changed }}
       sally_changed: ${{ steps.check.outputs.sally_changed }}
@@ -97,6 +99,7 @@ jobs:
       matrix:
         image:
           - excalidraw
+          - homebox
           - pypiserver
           - sally
           - wifi-card
