@@ -1,3 +1,5 @@
+# Adapted from https://github.com/sysadminsmedia/homebox/blob/main/Dockerfile.rootless
+
 FROM library/node:22.19-alpine3.22 AS clone
 
 WORKDIR /app
