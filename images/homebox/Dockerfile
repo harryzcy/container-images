@@ -1,4 +1,4 @@
-FROM library/node:lts-alpine AS clone
+FROM library/node:22.19-alpine3.22 AS clone
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ RUN apk update && \
   git checkout "$VERSION" && \
   echo "$VERSION" > /VERSION
 
-FROM library/node:lts-alpine AS frontend-builder
+FROM library/node:22.19-alpine3.22 AS frontend-builder
 
 WORKDIR /app
 
@@ -27,8 +27,7 @@ RUN apk update && \
   pnpm install --frozen-lockfile && \
   pnpm build
 
-# Build API stage
-FROM library/golang:alpine AS builder
+FROM library/golang:1.25.1-alpine3.22 AS builder
 
 WORKDIR /go/src/app
 
@@ -69,7 +68,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 RUN mkdir /data
 
-FROM library/alpine:latest
+FROM library/alpine:3.22
 ENV HBOX_MODE=production
 ENV HBOX_STORAGE_CONN_STRING=file:///?no_tmp_dir=true
 ENV HBOX_STORAGE_PREFIX_PATH=data
