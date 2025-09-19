@@ -82,6 +82,7 @@ RUN apk --no-cache add ca-certificates wget && \
 RUN addgroup -g 65532 nonroot && adduser -u 65532 -G nonroot -S nonroot
 
 RUN mkdir /app
+COPY --from=clone --chown=nonroot /VERSION /VERSION
 COPY --from=builder --chown=nonroot /go/bin/api /app
 COPY --from=builder --chown=nonroot /data /data
 RUN chmod +x /app/api
