@@ -12,7 +12,8 @@ RUN apk update && \
   git clone https://github.com/sysadminsmedia/homebox.git && \
   cd homebox && \
   git checkout "$VERSION" && \
-  echo "$VERSION" > /VERSION
+  echo "$VERSION" > /VERSION && \
+  git rev-parse --short HEAD > /COMMIT
 
 FROM library/node:22.19-alpine3.22 AS frontend-builder
 
@@ -36,26 +37,23 @@ WORKDIR /go/src/app
 ARG TARGETOS
 ARG TARGETARCH
 
+COPY --from=clone /COMMIT /COMMIT
 COPY --from=clone /VERSION /VERSION
 
 RUN VERSION=$(cat /VERSION)
-RUN COMMIT=$(git rev-parse --short HEAD || echo "unknown")
+RUN COMMIT=$(cat /COMMIT)
 RUN BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 COPY --from=clone /app/homebox ./homebox
 RUN cd homebox/backend && go mod download
 
-# Install necessary build tools
 RUN apk update && \
   apk upgrade && \
   apk add --no-cache git build-base gcc g++ && \
   if [ "$TARGETARCH" != "arm" ]; then apk --no-cache add libwebp libavif libheif libjxl; fi
 
-# Clear old public files and copy new ones from frontend build
-RUN rm -rf ./app/api/public
 COPY --from=frontend-builder /app/homebox/frontend/.output/public ./app/homebox/backend/api/static/public
 
-# Use cache for Go build artifacts
 RUN --mount=type=cache,target=/root/.cache/go-build \
   cd homebox/backend && \
   if [ "$TARGETARCH" = "arm" ] || [ "$TARGETARCH" = "riscv64" ];  \
