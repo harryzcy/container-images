@@ -8,7 +8,7 @@ RUN echo "$VERSION" > /VERSION
 
 FROM busybox:1.37.0@sha256:d82f458899c9696cb26a7c02d5568f81c8c8223f8661bb2a7988b269c8b9051e AS health
 
-FROM gcr.io/distroless/base:nonroot@sha256:06c713c675e983c5aea030592b1d635954218d29c4db2f8ec66912da1b87e228
+FROM gcr.io/distroless/base:nonroot@sha256:10136f394cbc891efa9f20974a48843f21a6b3cbde55b1778582195d6726fa85
 
 COPY --from=builder --chown=nonroot:nonroot /go/bin/sally /bin/
 COPY --from=health --chown=nonroot:nonroot /bin/wget /bin/
