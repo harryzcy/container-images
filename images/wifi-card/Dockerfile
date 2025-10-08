@@ -13,7 +13,7 @@ RUN git checkout "${VERSION}" && \
 
 FROM busybox:1.37.0@sha256:d82f458899c9696cb26a7c02d5568f81c8c8223f8661bb2a7988b269c8b9051e AS health
 
-FROM ghcr.io/nginx/nginx-unprivileged:1.29.1@sha256:9e3b977d06098adc284fcfbbdfb567b8dc26c08d3f14ad29725bd8039c0c2fbf
+FROM ghcr.io/nginx/nginx-unprivileged:1.29.1@sha256:67d2d72f91ceb1b97718cf48127f9a4323c595b4b085822f9fe32e796032004c
 
 USER nginx
 
