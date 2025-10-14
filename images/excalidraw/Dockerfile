@@ -12,7 +12,7 @@ RUN yarn --network-timeout 600000 && \
 
 FROM busybox:1.37.0@sha256:d82f458899c9696cb26a7c02d5568f81c8c8223f8661bb2a7988b269c8b9051e AS health
 
-FROM ghcr.io/nginx/nginx-unprivileged:1.29.2@sha256:5585436a6e28e4164293292014a96cee64ba3eac1d866b1449cac493abe27cb0
+FROM ghcr.io/nginx/nginx-unprivileged:1.29.2@sha256:1a9d36a1fe202c1a90b852f7683081ed5bea712a11b1a9869093b451d1169cbc
 
 USER nginx
 
