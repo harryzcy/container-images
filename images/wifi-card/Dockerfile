@@ -1,4 +1,4 @@
-FROM node:24.10.0-bookworm@sha256:377f1c17906eb5a145c34000247faa486bece16386b77eedd5a236335025c2ef AS builder
+FROM node:25.0.0-bookworm@sha256:92a8086f817cfaf95bfca41d2f72382ae64e87389fe865f9b2f06335edb34073 AS builder
 
 # renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card
 ENV VERSION="fbde2cd27669ac29e1c0bc9393f9a83ffa93f8c6"
