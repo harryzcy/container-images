@@ -14,7 +14,7 @@ function loadImages() {
   }
 
   const images = imagesData.images.map((image) => image.name);
-
+  console.log("Loaded images:", images);
   return images;
 }
 
