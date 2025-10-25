@@ -117,7 +117,7 @@ jobs:
   release:
     name: Release Docker images
     runs-on: ubuntu-24.04
-    needs: pre-check
+    needs: [pre-check, source-images]
     permissions:
       packages: write
     strategy:
