@@ -18,7 +18,7 @@ jobs:
     name: Source Images
     runs-on: ubuntu-24.04
     outputs:
-      images: ${{ steps.images.outputs.result }}
+      matrix: ${{ steps.images.outputs.result }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
@@ -41,16 +41,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: source-images
     strategy:
-      matrix:
-        image:
-          - excalidraw
-          - homebox
-          - pypiserver
-          - resvg
-          - sally
-          - typst
-          - wifi-card
-          - yt-dlp
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1

@@ -14,8 +14,11 @@ function loadImages() {
   }
 
   const images = imagesData.images.map((image) => image.name);
-  console.log("Loaded images:", images);
-  return images;
+  const output = {
+    image: images,
+  };
+  console.log("Loaded images:", output);
+  return output;
 }
 
 module.exports = () => {
