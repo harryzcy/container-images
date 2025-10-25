@@ -30,14 +30,8 @@ jobs:
         id: images
         uses: actions/github-script@v8
         script: |
-          const fs = require('fs');
-          const path = require('path');
-
-          const imagesJson = fs.readFileSync(path.join(process.cwd(), 'images.json'), 'utf8');
-          const imagesData = JSON.parse(imagesJson);
-
-          const images = imagesData.images.map(image => image.name);
-          return images;
+          const script = require('./path/to/script.js')
+          return script({ context })
 
   pre-check:
     name: Pre Check
