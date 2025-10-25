@@ -33,8 +33,8 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const script = require('./scripts/get_images.js')
-            return script()
+            const determineMatrix = require('./scripts/matrix.js')
+            return determineMatrix()
 
   build:
     name: Images

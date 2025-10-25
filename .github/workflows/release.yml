@@ -16,7 +16,8 @@ jobs:
     name: Source Images
     runs-on: ubuntu-24.04
     outputs:
-      matrix: ${{ steps.images.outputs.result }}
+      matrix: ${{ steps.matrix.outputs.result }}
+      matrix-platforms: ${{ steps.matrix-platforms.outputs.result }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
@@ -26,19 +27,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Get image list
-        id: images
+      - name: Determine matrix
+        id: matrix
         uses: actions/github-script@v8
         script: |
-          const script = require('./scripts/get_images.js')
-          return script()
+          const determineMatrix = require('./scripts/matrix.js')
+          return determineMatrix()
+
+      - name: Determine matrix with platforms
+        id: matrix-platforms
+        uses: actions/github-script@v8
+        script: |
+          const determineMatrix = require('./scripts/matrix.js')
+          return determineMatrix(withPlatforms=true)
 
   pre-check:
     name: Pre Check
     runs-on: ubuntu-24.04
     needs: source-images
     strategy:
-      matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix-platforms) }}
     outputs:
       excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
       homebox_changed: ${{ steps.check.outputs.homebox_changed }}
@@ -111,18 +119,7 @@ jobs:
       packages: write
     strategy:
       fail-fast: false
-      matrix:
-        image:
-          - excalidraw
-          - homebox
-          - pypiserver
-          - sally
-          - typst
-          - wifi-card
-          - yt-dlp
-        include:
-          - image: resvg
-            platforms: linux/amd64
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
