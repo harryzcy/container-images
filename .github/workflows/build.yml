@@ -31,9 +31,10 @@ jobs:
       - name: Get image list
         id: images
         uses: actions/github-script@v8
-        script: |
-          const script = require('./scripts/get_images.js')
-          return script()
+        with:
+          script: |
+            const script = require('./scripts/get_images.js')
+            return script()
 
   build:
     name: Images
