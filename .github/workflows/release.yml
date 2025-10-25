@@ -31,7 +31,7 @@ jobs:
         uses: actions/github-script@v8
         script: |
           const script = require('./path/to/script.js')
-          return script({ context })
+          return script()
 
   pre-check:
     name: Pre Check
