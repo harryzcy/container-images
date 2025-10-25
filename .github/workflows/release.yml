@@ -30,17 +30,19 @@ jobs:
       - name: Determine matrix
         id: matrix
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
-        script: |
-          const determineMatrix = require('./scripts/matrix.js')
-          return determineMatrix()
+        with:
+          script: |
+            const determineMatrix = require('./scripts/matrix.js')
+            return determineMatrix()
 
       - name: Determine matrix with platforms
         id: matrix-platforms
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
-        script: |
-          const determineMatrix = require('./scripts/matrix.js')
-          const withPlatforms = true
-          return determineMatrix(withPlatforms)
+        with:
+          script: |
+            const determineMatrix = require('./scripts/matrix.js')
+            const withPlatforms = true
+            return determineMatrix(withPlatforms)
 
   pre-check:
     name: Pre Check
