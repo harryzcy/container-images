@@ -25,6 +25,7 @@ jobs:
           - pypiserver
           - resvg
           - sally
+          - typst
           - wifi-card
           - yt-dlp
     steps:
