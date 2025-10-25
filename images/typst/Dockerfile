@@ -14,6 +14,8 @@ RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static clang lld \
 
 FROM alpine:3.22.0
 
+#checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
+
 RUN addgroup -g 65532 nonroot && adduser -u 65532 -G nonroot -S nonroot
 
 COPY --from=builder --chown=nonroot:nonroot /typst/target/release/typst /bin/typst
