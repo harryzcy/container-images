@@ -12,9 +12,37 @@ permissions:
   contents: read
 
 jobs:
+  source-images:
+    name: Source Images
+    runs-on: ubuntu-24.04
+    outputs:
+      images: ${{ steps.images.outputs.result }}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+      
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Get image list
+        id: images
+        uses: actions/github-script@v8
+        run: |
+          const fs = require('fs');
+          const path = require('path');
+
+          const imagesJson = fs.readFileSync(path.join(process.cwd(), 'images.json'), 'utf8');
+          const imagesData = JSON.parse(imagesJson);
+
+          const images = imagesData.images.map(image => image.name);
+          return images;
+
   pre-check:
     name: Pre Check
     runs-on: ubuntu-24.04
+    needs: source-images
     strategy:
       matrix:
         image:
