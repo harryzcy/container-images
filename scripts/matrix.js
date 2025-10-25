@@ -13,7 +13,7 @@ function determineMatrix(withPlatforms = false) {
     throw new Error(`Failed to load or parse images.json: ${err.message}`);
   }
 
-  const matrix = imagesData.images.map((image) => {
+  const include = imagesData.images.map((image) => {
     if (withPlatforms && image.platform) {
       return {
         image: image.name,
@@ -22,6 +22,7 @@ function determineMatrix(withPlatforms = false) {
     }
     return image.name;
   });
+  const matrix = { include };
 
   console.log("Matrix:", matrix);
   return matrix;
