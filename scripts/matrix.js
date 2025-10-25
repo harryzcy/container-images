@@ -13,27 +13,15 @@ function determineMatrix(withPlatforms = false) {
     throw new Error(`Failed to load or parse images.json: ${err.message}`);
   }
 
-  const matrix = {
-    image: [],
-  };
-  if (withPlatforms) {
-    matrix.include = [];
-  }
-
-  for (const entry of imagesData.images) {
-    if (withPlatforms) {
-      if (!entry.platform) {
-        matrix.image.push(entry.name);
-      } else {
-        matrix.include.push({
-          image: entry.name,
-          platforms: entry.platform,
-        });
-      }
-    } else {
-      matrix.image.push(entry.name);
+  const matrix = imagesData.images.map((image) => {
+    if (withPlatforms && image.platform) {
+      return {
+        image: image.name,
+        platforms: image.platforms,
+      };
     }
-  }
+    return image.name;
+  });
 
   console.log("Matrix:", matrix);
   return matrix;

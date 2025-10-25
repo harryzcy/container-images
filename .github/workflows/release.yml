@@ -39,7 +39,8 @@ jobs:
         uses: actions/github-script@v8
         script: |
           const determineMatrix = require('./scripts/matrix.js')
-          return determineMatrix(withPlatforms=true)
+          const withPlatforms = true
+          return determineMatrix(withPlatforms)
 
   pre-check:
     name: Pre Check
