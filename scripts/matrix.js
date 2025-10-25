@@ -20,7 +20,9 @@ function determineMatrix(withPlatforms = false) {
         platforms: image.platforms,
       };
     }
-    return image.name;
+    return {
+      image: image.name,
+    };
   });
   const matrix = { include };
 
