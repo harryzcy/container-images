@@ -23,6 +23,7 @@ jobs:
           - pypiserver
           - resvg
           - sally
+          - typst
           - wifi-card
           - yt-dlp
     outputs:
@@ -31,6 +32,7 @@ jobs:
       pypiserver_changed: ${{ steps.check.outputs.pypiserver_changed }}
       resvg_changed: ${{ steps.check.outputs.resvg_changed }}
       sally_changed: ${{ steps.check.outputs.sally_changed }}
+      typst_changed: ${{ steps.check.outputs.typst_changed }}
       wifi-card_changed: ${{ steps.check.outputs.wifi-card_changed }}
       yt-dlp_changed: ${{ steps.check.outputs.yt-dlp_changed }}
     steps:
@@ -102,6 +104,7 @@ jobs:
           - homebox
           - pypiserver
           - sally
+          - typst
           - wifi-card
           - yt-dlp
         include:
