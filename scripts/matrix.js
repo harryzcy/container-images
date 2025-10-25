@@ -14,7 +14,7 @@ function determineMatrix(withPlatforms = false) {
   }
 
   const include = imagesData.images.map((image) => {
-    if (withPlatforms && image.platform) {
+    if (withPlatforms && image.platforms) {
       return {
         image: image.name,
         platforms: image.platforms,
