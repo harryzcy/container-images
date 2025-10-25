@@ -30,7 +30,7 @@ jobs:
         id: images
         uses: actions/github-script@v8
         script: |
-          const script = require('./path/to/script.js')
+          const script = require('./scripts/get_images.js')
           return script()
 
   pre-check:
