@@ -9,7 +9,7 @@ function loadImages() {
       "utf8"
     );
     imagesData = JSON.parse(imagesJson);
-  } catch (error) {
+  } catch (err) {
     throw new Error(`Failed to load or parse images.json: ${err.message}`);
   }
 
