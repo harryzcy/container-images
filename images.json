@@ -1,0 +1,29 @@
+{
+  "images": [
+    {
+      "name": "excalidraw"
+    },
+    {
+      "name": "homebox"
+    },
+    {
+      "name": "pypiserver"
+    },
+    {
+      "name": "resvg",
+      "platforms": "linux/amd64"
+    },
+    {
+      "name": "sally"
+    },
+    {
+      "name": "typst"
+    },
+    {
+      "name": "wifi-card"
+    },
+    {
+      "name": "yt-dlp"
+    }
+  ]
+}

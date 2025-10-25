@@ -12,20 +12,44 @@ permissions:
   contents: read
 
 jobs:
+  source-images:
+    name: Source Images
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.matrix.outputs.result }}
+      matrix-platforms: ${{ steps.matrix-platforms.outputs.result }}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Determine matrix
+        id: matrix
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const determineMatrix = require('./scripts/matrix.js')
+            return determineMatrix()
+
+      - name: Determine matrix with platforms
+        id: matrix-platforms
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const determineMatrix = require('./scripts/matrix.js')
+            const withPlatforms = true
+            return determineMatrix(withPlatforms)
+
   pre-check:
     name: Pre Check
     runs-on: ubuntu-24.04
+    needs: source-images
     strategy:
-      matrix:
-        image:
-          - excalidraw
-          - homebox
-          - pypiserver
-          - resvg
-          - sally
-          - typst
-          - wifi-card
-          - yt-dlp
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix-platforms) }}
     outputs:
       excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
       homebox_changed: ${{ steps.check.outputs.homebox_changed }}
@@ -93,23 +117,12 @@ jobs:
   release:
     name: Release Docker images
     runs-on: ubuntu-24.04
-    needs: pre-check
+    needs: [pre-check, source-images]
     permissions:
       packages: write
     strategy:
       fail-fast: false
-      matrix:
-        image:
-          - excalidraw
-          - homebox
-          - pypiserver
-          - sally
-          - typst
-          - wifi-card
-          - yt-dlp
-        include:
-          - image: resvg
-            platforms: linux/amd64
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
