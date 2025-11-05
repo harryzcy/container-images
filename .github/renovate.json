@@ -22,7 +22,7 @@
       "matchPackageNames": [
         "node"
       ],
-      "allowedVersions": "<=24.x"
+      "allowedVersions": "/^24\\./"
     }
   ]
 }
