@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   curl ca-certificates
 
 # renovate: datasource=github-tags depName=yt-dlp packageName=yt-dlp/yt-dlp versioning=semver
-ENV VERSION="2025.10.22"
+ENV VERSION="2025.11.12"
 
 RUN echo "$VERSION" > /VERSION
 
