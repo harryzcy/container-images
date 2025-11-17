@@ -20,7 +20,7 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
   curl -L "https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}/${filename}" -o /bin/yt-dlp && \
   chmod +x /bin/yt-dlp
 
-FROM gcr.io/distroless/base-nossl-debian13:nonroot@sha256:2dbe330ebe09a1081bec155da2c11449174a1922efdc9729f093ea06b6fa1ece
+FROM gcr.io/distroless/base-nossl-debian13:nonroot@sha256:41f8c3a5cba400c2eeca6d8f74e74453d93019763366dda0b49efdf6f70b34b0
 
 #checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
 
