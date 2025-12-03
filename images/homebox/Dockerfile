@@ -31,7 +31,7 @@ RUN apk update && \
   pnpm install --frozen-lockfile && \
   pnpm build
 
-FROM library/golang:1.25.4-alpine3.22@sha256:d3f0cf7723f3429e3f9ed846243970b20a2de7bae6a5b66fc5914e228d831bbb AS builder
+FROM library/golang:1.25.5@sha256:20b91eda7a9627c127c0225b0d4e8ec927b476fa4130c6760928b849d769c149 AS builder
 
 WORKDIR /go/src/app
 
