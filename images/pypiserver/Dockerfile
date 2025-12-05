@@ -1,4 +1,4 @@
-FROM library/python:3.12.12-alpine3.22@sha256:d82291d418d5c47f267708393e40599ae836f2260b0519dd38670e9d281657f5 AS base
+FROM library/python:3.12.12-alpine3.23@sha256:f77b6338e24e348298373c8a8d371e362573bcd2a963ae341b165525326de9f4 AS base
 
 FROM base AS builder
 
@@ -19,7 +19,7 @@ RUN python -m venv venv && \
 
 RUN echo $(venv/bin/pypi-server --version) > /VERSION
 
-FROM busybox:1.37.0@sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee AS health
+FROM library/busybox:1.37.0@sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee AS health
 
 FROM base
 
