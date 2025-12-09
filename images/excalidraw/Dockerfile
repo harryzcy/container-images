@@ -1,4 +1,4 @@
-FROM node:22.21.1-bookworm@sha256:4ad2c2b350ab49fb637ab40a269ffe207c61818bb7eb3a4ea122001a0c605e1f AS build
+FROM node:22.21.1-bookworm@sha256:692aca107b90f3bf8cfe0e8b630353636b292cd815bf47a07d2270620998a131 AS build
 
 # renovate: datasource=github-tags depName=excalidraw packageName=excalidraw/excalidraw versioning=semver
 ENV VERSION="v0.18.0"
