@@ -1,7 +1,7 @@
 FROM library/rust:1.91.1-alpine3.22@sha256:8efbfb788786eeb127adc581394349c5fb567712156e0f8c2e499acadbc23756 AS builder
 
 # renovate: datasource=github-tags depName=typst packageName=typst/typst versioning=semver
-ENV VERSION="v0.14.1"
+ENV VERSION="v0.14.2"
 
 RUN apk add --no-cache git \
   && git clone --depth 1 --branch "${VERSION}" https://github.com/typst/typst.git
