@@ -1,6 +1,6 @@
 # Adapted from https://github.com/sysadminsmedia/homebox/blob/main/Dockerfile.rootless
 
-FROM library/node:25.2.1-alpine3.23@sha256:0d9532ae8efaec8b3067e9f54cdad69d64f2cd5022960df840243a860b0a8c72 AS clone
+FROM library/node:25.2.1-alpine3.23@sha256:f4769ca6eeb6ebbd15eb9c8233afed856e437b75f486f7fccaa81d7c8ad56007 AS clone
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN apk update && \
   echo "$VERSION" > /VERSION && \
   git rev-parse --short HEAD > /COMMIT
 
-FROM library/node:25.2.1-alpine3.23@sha256:0d9532ae8efaec8b3067e9f54cdad69d64f2cd5022960df840243a860b0a8c72 AS frontend-builder
+FROM library/node:25.2.1-alpine3.23@sha256:f4769ca6eeb6ebbd15eb9c8233afed856e437b75f486f7fccaa81d7c8ad56007 AS frontend-builder
 
 WORKDIR /app
 
