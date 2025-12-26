@@ -1,4 +1,4 @@
-FROM node:22.21.1-bookworm@sha256:4ad2c2b350ab49fb637ab40a269ffe207c61818bb7eb3a4ea122001a0c605e1f AS build
+FROM node:22.21.1-bookworm@sha256:c8abd8da9cfddd2dfd2d5aa9ea2e54f9f70d3968ecf81bf5c2422594fa13fa83 AS build
 
 # renovate: datasource=github-tags depName=excalidraw packageName=excalidraw/excalidraw versioning=semver
 ENV VERSION="v0.18.0"
@@ -10,9 +10,9 @@ WORKDIR /excalidraw
 RUN yarn --network-timeout 600000 && \
   yarn build:app:docker
 
-FROM busybox:1.37.0@sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee AS health
+FROM busybox:1.37.0@sha256:d80cd694d3e9467884fcb94b8ca1e20437d8a501096cdf367a5a1918a34fc2fd AS health
 
-FROM ghcr.io/nginx/nginx-unprivileged:1.29.2@sha256:585d7c4312550836f382a009cae77e630baaef174930a06ac248feba16c78e74
+FROM ghcr.io/nginx/nginx-unprivileged:1.29.3@sha256:602df0414a225625456b690e4f4f81e0fc088abcb6b15d986745b0f1c32c9759
 
 USER nginx
 

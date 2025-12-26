@@ -1,4 +1,4 @@
-FROM debian:13.2@sha256:8f6a88feef3ed01a300dafb87f208977f39dccda1fd120e878129463f7fa3b8f AS builder
+FROM debian:13.2@sha256:0d01188e8dd0ac63bf155900fad49279131a876a1ea7fac917c62e87ccb2732d AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl tar ca-certificates
@@ -12,7 +12,7 @@ RUN curl -L "https://github.com/linebender/resvg/releases/download/$VERSION/resv
   && tar -xzf /tmp/resvg.tar.gz -C /bin/ \
   && rm /tmp/resvg.tar.gz
 
-FROM gcr.io/distroless/cc-debian13:nonroot@sha256:d4cbfb0a86ddeb630204a9c0f8c1fb6126672ab7a1e53de1ae63db258be73173
+FROM gcr.io/distroless/cc-debian13:nonroot@sha256:6ecf048c4622b32291b92266c6618c9ca34989bbfa8ae6dcb82216dce082aabe
 
 #checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
 

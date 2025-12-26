@@ -1,11 +1,11 @@
 # Adapted from https://github.com/sysadminsmedia/homebox/blob/main/Dockerfile.rootless
 
-FROM library/node:25.2.1-alpine3.22@sha256:26ded7f450a0ad37241d2ae97ea521a59cb551a1785c8a950f74b0a291ad3aea AS clone
+FROM library/node:25.2.1-alpine3.23@sha256:f4769ca6eeb6ebbd15eb9c8233afed856e437b75f486f7fccaa81d7c8ad56007 AS clone
 
 WORKDIR /app
 
 # renovate: datasource=github-tags depName=homebox packageName=sysadminsmedia/homebox versioning=semver
-ENV VERSION="v0.21.0"
+ENV VERSION="v0.22.2"
 
 RUN apk update && \
   apk upgrade && \
@@ -16,7 +16,7 @@ RUN apk update && \
   echo "$VERSION" > /VERSION && \
   git rev-parse --short HEAD > /COMMIT
 
-FROM library/node:25.2.1-alpine3.22@sha256:26ded7f450a0ad37241d2ae97ea521a59cb551a1785c8a950f74b0a291ad3aea AS frontend-builder
+FROM library/node:25.2.1-alpine3.23@sha256:f4769ca6eeb6ebbd15eb9c8233afed856e437b75f486f7fccaa81d7c8ad56007 AS frontend-builder
 
 WORKDIR /app
 
@@ -31,7 +31,7 @@ RUN apk update && \
   pnpm install --frozen-lockfile && \
   pnpm build
 
-FROM library/golang:1.25.5-alpine3.22@sha256:3587db7cc96576822c606d119729370dbf581931c5f43ac6d3fa03ab4ed85a10 AS builder
+FROM library/golang:1.25.5-alpine3.23@sha256:ac09a5f469f307e5da71e766b0bd59c9c49ea460a528cc3e6686513d64a6f1fb AS builder
 
 WORKDIR /go/src/app
 
@@ -69,7 +69,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 RUN mkdir /data
 
-FROM library/alpine:3.23.0@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
+FROM library/alpine:3.23.2@sha256:865b95f46d98cf867a156fe4a135ad3fe50d2056aa3f25ed31662dff6da4eb62
 ENV HBOX_MODE=production
 ENV HBOX_STORAGE_CONN_STRING=file:///?no_tmp_dir=true
 ENV HBOX_STORAGE_PREFIX_PATH=data

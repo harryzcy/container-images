@@ -1,7 +1,7 @@
-FROM rust:1.91.1-alpine3.22@sha256:8efbfb788786eeb127adc581394349c5fb567712156e0f8c2e499acadbc23756 AS builder
+FROM library/rust:1.92.0-alpine3.23@sha256:f6c22e0a256c05d44fca23bf530120b5d4a6249a393734884281ca80782329bc AS builder
 
 # renovate: datasource=github-tags depName=typst packageName=typst/typst versioning=semver
-ENV VERSION="v0.14.1"
+ENV VERSION="v0.14.2"
 
 RUN apk add --no-cache git \
   && git clone --depth 1 --branch "${VERSION}" https://github.com/typst/typst.git
@@ -12,7 +12,7 @@ RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static clang lld \
   && cargo build --release \
   && echo "$VERSION" > /VERSION
 
-FROM alpine:3.23.0@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
+FROM library/alpine:3.23.2@sha256:865b95f46d98cf867a156fe4a135ad3fe50d2056aa3f25ed31662dff6da4eb62
 
 #checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
 
