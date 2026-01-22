@@ -11,7 +11,7 @@ RUN git checkout "${VERSION}" && \
   git rev-parse --short HEAD > /VERSION && \
   yarn && yarn build
 
-FROM busybox:1.37.0@sha256:b86c79d6d337dcaa4cad3cfc704d5e6ae5ba725f3e0674d96f65af7a8f5e2761 AS health
+FROM busybox:1.37.0@sha256:e226d6308690dbe282443c8c7e57365c96b5228f0fe7f40731b5d84d37a06839 AS health
 
 FROM ghcr.io/nginx/nginx-unprivileged:1.29.3@sha256:8b0f514beb3f2baa8248320ccb9835f1790f2df58564a3911d44ce85b0ef6d4c
 
