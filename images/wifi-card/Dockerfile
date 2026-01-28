@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends git
 RUN git clone --depth 1 https://github.com/bndw/wifi-card.git
 
 WORKDIR /wifi-card
-RUN git checkout "${VERSION}" && \
+RUN git fetch --depth 1 origin "${VERSION}" && \
+  git checkout "${VERSION}" && \
   git rev-parse --short HEAD > /VERSION && \
   yarn && yarn build
 
