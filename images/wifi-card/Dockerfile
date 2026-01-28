@@ -1,7 +1,7 @@
 FROM node:25.3.0-bookworm@sha256:a2f09f3ab9217c692a4e192ea272866ae43b59fabda1209101502bf40e0b9768 AS builder
 
 # renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card
-ENV VERSION="fbde2cd27669ac29e1c0bc9393f9a83ffa93f8c6"
+ENV VERSION="c1c1ff68b2ebd440defc87efb7eaa8b049ec5b3e"
 
 RUN apt-get update && apt-get install -y --no-install-recommends git
 RUN git clone --depth 1 https://github.com/bndw/wifi-card.git
