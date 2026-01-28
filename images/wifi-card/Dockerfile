@@ -4,10 +4,11 @@ FROM node:25.3.0-bookworm@sha256:a2f09f3ab9217c692a4e192ea272866ae43b59fabda1209
 ENV VERSION="fbde2cd27669ac29e1c0bc9393f9a83ffa93f8c6"
 
 RUN apt-get update && apt-get install -y --no-install-recommends git
-RUN git clone https://github.com/bndw/wifi-card.git
+RUN git clone --depth 1 https://github.com/bndw/wifi-card.git
 
 WORKDIR /wifi-card
-RUN git checkout "${VERSION}" && \
+RUN git fetch --depth 1 origin "${VERSION}" && \
+  git checkout "${VERSION}" && \
   git rev-parse --short HEAD > /VERSION && \
   yarn && yarn build
 
