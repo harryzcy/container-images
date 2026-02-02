@@ -5,7 +5,7 @@ FROM library/node:25.3.0-alpine3.23@sha256:e80397b81fa93888b5f855e8bef37d9b18d3c
 WORKDIR /app
 
 # renovate: datasource=github-tags depName=homebox packageName=sysadminsmedia/homebox versioning=semver
-ENV VERSION="v0.23.0"
+ENV VERSION="v0.23.1"
 
 RUN apk update && \
   apk upgrade && \
