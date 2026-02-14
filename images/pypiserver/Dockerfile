@@ -19,7 +19,7 @@ RUN python -m venv venv && \
 
 RUN echo $(venv/bin/pypi-server --version) > /VERSION
 
-FROM library/busybox:1.37.0@sha256:d80cd694d3e9467884fcb94b8ca1e20437d8a501096cdf367a5a1918a34fc2fd AS health
+FROM library/busybox:1.37.0@sha256:b3255e7dfbcd10cb367af0d409747d511aeb66dfac98cf30e97e87e4207dd76f AS health
 
 FROM base
 

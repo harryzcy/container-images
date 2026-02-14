@@ -1,19 +1,20 @@
-FROM node:25.2.1-bookworm@sha256:9e69791906aaabda0fc123beb81861d53bcdf4e9611c15df0b916fff5c1ccc02 AS builder
+FROM node:25.6.0-bookworm@sha256:3523df9d45c0280f49f4b503c7e2d354eeab5d676017488dd082188a0f09f99a AS builder
 
 # renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card
-ENV VERSION="fbde2cd27669ac29e1c0bc9393f9a83ffa93f8c6"
+ENV VERSION="c1c1ff68b2ebd440defc87efb7eaa8b049ec5b3e"
 
 RUN apt-get update && apt-get install -y --no-install-recommends git
 RUN git clone --depth 1 https://github.com/bndw/wifi-card.git
 
 WORKDIR /wifi-card
-RUN git checkout "${VERSION}" && \
+RUN git fetch --depth 1 origin "${VERSION}" && \
+  git checkout "${VERSION}" && \
   git rev-parse --short HEAD > /VERSION && \
   yarn && yarn build
 
-FROM busybox:1.37.0@sha256:d80cd694d3e9467884fcb94b8ca1e20437d8a501096cdf367a5a1918a34fc2fd AS health
+FROM busybox:1.37.0@sha256:b3255e7dfbcd10cb367af0d409747d511aeb66dfac98cf30e97e87e4207dd76f AS health
 
-FROM ghcr.io/nginx/nginx-unprivileged:1.29.3@sha256:602df0414a225625456b690e4f4f81e0fc088abcb6b15d986745b0f1c32c9759
+FROM ghcr.io/nginx/nginx-unprivileged:1.29.5@sha256:79f2c2c26124360d69d12078d36f9bf129fffe6eabe146ed3689b523fdf39a17
 
 USER nginx
 
