@@ -1,4 +1,4 @@
-FROM library/rust:1.94.1-alpine3.23@sha256:7f752ee8ea5deb9f4863d8c3f228a216a6466619882f09a44b9eda9617dc7770 AS builder
+FROM library/rust:1.94.1-alpine3.23@sha256:77237dd363a0b127bb5ef532c2d64c0deb380b738e43a9c4bdac73398d6d0a08 AS builder
 
 # renovate: datasource=github-tags depName=typst packageName=typst/typst versioning=semver
 ENV VERSION="v0.14.2"
@@ -12,7 +12,7 @@ RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static clang lld \
   && cargo build --release \
   && echo "$VERSION" > /VERSION
 
-FROM library/alpine:3.23.3@sha256:25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
+FROM library/alpine:3.23.4@sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11
 
 #checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
 
