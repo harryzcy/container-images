@@ -1,4 +1,4 @@
-FROM debian:13.4@sha256:3352c2e13876c8a5c5873ef20870e1939e73cb9a3c1aeba5e3e72172a85ce9ed AS builder
+FROM debian:13.4@sha256:4ba907ce4b3f9451114435731752a8fcd9af1e26e6160d327b02869a54caf269 AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl tar ca-certificates
