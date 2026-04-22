@@ -1,4 +1,4 @@
-FROM node:25.9.0-bookworm@sha256:3953ec6a2c10154a58ccf4ba48083ddfe3f8641d63f0d1d5cb8a4a78169123a7 AS builder
+FROM node:25.9.0-bookworm@sha256:c69f4e0640e5b065f2694579793e4309f1e0e49868b0f2fea29c44d9c0dc2caf AS builder
 
 # renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card
 ENV VERSION="5ad1488108dad1076881bb0862a51a03473c79e4"
@@ -14,7 +14,7 @@ RUN git fetch --depth 1 origin "${VERSION}" && \
 
 FROM busybox:1.37.0@sha256:1487d0af5f52b4ba31c7e465126ee2123fe3f2305d638e7827681e7cf6c83d5e AS health
 
-FROM ghcr.io/nginx/nginx-unprivileged:1.29.8@sha256:49b1dda3714696e4930e5cd419ede1c62f3fdc64e98ff636b201966f17e0b9a2
+FROM ghcr.io/nginx/nginx-unprivileged:1.30@sha256:9b269aa3263e1dcba790fda66aa91b6b02f904adcd8329e5cf256e14a65e2974
 
 USER nginx
 
