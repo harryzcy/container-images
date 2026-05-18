@@ -14,7 +14,7 @@ RUN git fetch --depth 1 origin "${VERSION}" && \
 
 FROM busybox:1.37.0@sha256:1487d0af5f52b4ba31c7e465126ee2123fe3f2305d638e7827681e7cf6c83d5e AS health
 
-FROM ghcr.io/nginx/nginx-unprivileged:1.30@sha256:6f5c8f8836fce1eba7daa6b4f0dbfe7aa742be47e1b15386a67be7a3dbd06086
+FROM ghcr.io/nginx/nginx-unprivileged:1.30@sha256:0c3b1a35409f6548408c4e2c29394acbdc6aa354fb0d79919cdec41865f30065
 
 USER nginx
 
