@@ -12,7 +12,7 @@ RUN git fetch --depth 1 origin "${VERSION}" && \
   git rev-parse --short HEAD > /VERSION && \
   yarn && yarn build
 
-FROM busybox:1.37.0@sha256:1487d0af5f52b4ba31c7e465126ee2123fe3f2305d638e7827681e7cf6c83d5e AS health
+FROM busybox:1.37.0@sha256:0d3f1e630be52ade0c06107515937607be2cab11a2ad2122099fc79e19bcc18b AS health
 
 FROM ghcr.io/nginx/nginx-unprivileged:1.30@sha256:02e2892ee192efbc768b01dd6496acf3659301019eb641bfdfbf2d6d570fb9f7
 
