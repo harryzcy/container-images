@@ -6,7 +6,7 @@ ENV VERSION="v1.6.0"
 RUN CGO_ENABLED=0 go install -ldflags="-w -s" "go.uber.org/sally@${VERSION}"
 RUN echo "$VERSION" > /VERSION
 
-FROM busybox:1.37.0@sha256:0d3f1e630be52ade0c06107515937607be2cab11a2ad2122099fc79e19bcc18b AS health
+FROM busybox:1.38.0@sha256:b6762ddf4a50aabb5f4d21aa6f447d05d5633fb09f09c08b33f22356a2f98be0 AS health
 
 FROM gcr.io/distroless/base:nonroot@sha256:a557d784ac275c287d2bdf3172f47bece8d2a0ef3c0fdefb712e95084a04a562
 
