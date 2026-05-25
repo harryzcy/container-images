@@ -10,7 +10,9 @@ WORKDIR /wifi-card
 RUN git fetch --depth 1 origin "${VERSION}" && \
   git checkout "${VERSION}" && \
   git rev-parse --short HEAD > /VERSION && \
-  npm install yarn && \
+  npm install -g corepack && \
+  yarn set version stable && \
+  yarn --version && \
   yarn && yarn build
 
 FROM busybox:1.38.0@sha256:fd8d9aa63ba2f0982b5304e1ee8d3b90a210bc1ffb5314d980eb6962f1a9715d AS health
