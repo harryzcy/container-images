@@ -123,6 +123,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
+    if:
+      github.event_name == 'push' || (github.event_name == 'pull_request' && needs.pre-check.outputs[format('{0}_changed', matrix.image)] == 'true')
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
