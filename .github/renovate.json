@@ -17,7 +17,9 @@
   "packageRules": [
     {
       "datasource": "docker",
-      "packageName": "node",
+      "matchPackageNames": [
+        "node"
+      ],
       "matchFileNames": [
         "images/excalidraw/Dockerfile"
       ],
