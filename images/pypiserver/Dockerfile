@@ -23,6 +23,7 @@ FROM library/busybox:1.38.0@sha256:fd8d9aa63ba2f0982b5304e1ee8d3b90a210bc1ffb531
 
 FROM base
 
+
 WORKDIR /app
 
 RUN addgroup --system nonroot && adduser --system nonroot -G nonroot
