@@ -18,7 +18,7 @@
     {
       "datasource": "docker",
       "packageName": "node",
-      "managerFilePatterns": [
+      "matchFileNames": [
         "images/excalidraw/Dockerfile"
       ],
       "allowedVersions": ">=22.22.3 <23.0.0"
