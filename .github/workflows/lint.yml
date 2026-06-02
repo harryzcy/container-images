@@ -22,3 +22,7 @@ jobs:
   spelling:
     name: Spelling
     uses: harryzcy/github-actions/.github/workflows/spelling.yml@d93d9917fa745a4996d968874c2bd88bbd8239fe # main
+
+  renovate:
+    name: Renovate
+    uses: harryzcy/github-actions/.github/workflows/renovate.yml@d93d9917fa745a4996d968874c2bd88bbd8239fe # main
