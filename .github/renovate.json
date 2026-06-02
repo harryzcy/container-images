@@ -12,12 +12,12 @@
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-z-]+?)(?: depName=(?<depName>.+?))? packageName=(?<packageName>.+?)(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) VERSION=\"(?<currentValue>.+?)\"\\s"
       ]
-    },
+    }
+  ],
+  "packageRules": [
     {
-      "matchDatasources": "docker",
-      "matchPackageNames": [
-        "node"
-      ],
+      "datasource": "docker",
+      "packageName": "node",
       "managerFilePatterns": [
         "images/excalidraw/Dockerfile"
       ],
