@@ -14,8 +14,10 @@
       ]
     },
     {
-      "datasource": "docker",
-      "packageName": "node",
+      "matchDatasources": "docker",
+      "matchPackageNames": [
+        "node"
+      ],
       "managerFilePatterns": [
         "images/excalidraw/Dockerfile"
       ],
