@@ -16,7 +16,7 @@
   ],
   "packageRules": [
     {
-      "datasource": "docker",
+      "matchDatasources": "docker",
       "matchPackageNames": [
         "node"
       ],
