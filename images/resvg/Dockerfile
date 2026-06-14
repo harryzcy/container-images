@@ -12,7 +12,7 @@ RUN curl -L "https://github.com/linebender/resvg/releases/download/$VERSION/resv
   && tar -xzf /tmp/resvg.tar.gz -C /bin/ \
   && rm /tmp/resvg.tar.gz
 
-FROM gcr.io/distroless/cc-debian13:nonroot@sha256:e1fd250ce83d94603e9887ec991156a6c26905a6b0001039b7a43699018c0733
+FROM gcr.io/distroless/cc-debian13:nonroot@sha256:d3cda6e91129130d7229a1806b6a73d292ef245ab032da7851907798024cefba
 
 #checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
 
