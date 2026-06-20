@@ -29,8 +29,7 @@ WORKDIR /app
 
 COPY --from=build-frontend /app/inngest ./inngest
 
-RUN git clone --depth 1 --branch v1.30.0 https://github.com/inngest/inngest.git \
-  && cd inngest \
+RUN cd inngest \
   && go mod tidy \
   && go generate ./...
 
