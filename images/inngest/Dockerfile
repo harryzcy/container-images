@@ -9,7 +9,7 @@ FROM library/node:26.3.1-alpine3.23@sha256:bead114a5f13c3f193e6278d28bc10a3e0cd4
 
 WORKDIR /app
 
-COPY --from=build /app/inngest ./inngest
+COPY --from=clone /app/inngest ./inngest
 
 RUN apk add --no-cache make && \
   npm install --global corepack@latest && \
