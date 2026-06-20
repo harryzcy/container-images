@@ -10,7 +10,7 @@ RUN echo "${VERSION}" > /VERSION && \
   git config --global url."https://github.com/".insteadOf "git@github.com:" && \
   git clone --recursive --depth 1 --branch "${VERSION}" https://github.com/inngest/inngest.git
 
-FROM library/node:26.3.1-alpine3.24@sha256:bead114a5f13c3f193e6278d28bc10a3e0cd464cb1c764c1abac79b1cc15f64f AS build-frontend
+FROM library/node:26.3.1-alpine3.24@sha256:a2dc166a387cc6ca1e62d0c8e265e49ca985d6e60abc9fe6e6c3d6ce8e63f606 AS build-frontend
 
 WORKDIR /app
 
