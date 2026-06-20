@@ -23,8 +23,6 @@ FROM --platform=$BUILDPLATFORM library/golang:1.26.4-alpine3.23 AS build-backend
 ARG TARGETARCH
 ARG TARGETOS
 
-RUN apk add build-base
-
 WORKDIR /app
 
 COPY --from=build-frontend /app/inngest ./inngest
