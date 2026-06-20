@@ -37,15 +37,16 @@ RUN cd inngest \
   && go generate ./... \
   && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest ./cmd
 
-# RUN --mount=type=cache,target=/root/.cache/go-build \
-#   GOFLAGS=-mod=vendor GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest cmd/main.go
-
 FROM alpine:3.23 AS inngest
 
 RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
 COPY --from=build-backend /go/bin/inngest /bin/inngest
 COPY --from=clone /VERSION /VERSION
 
+# APIs and Dashboard: 8288
+# Connect WebSocket gateway: 8289
 EXPOSE 8288 8289
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD wget alpha doctor healthcheck
 
 CMD ["inngest", "start"]
