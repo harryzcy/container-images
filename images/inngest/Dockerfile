@@ -31,10 +31,11 @@ COPY --from=build-frontend /app/inngest ./inngest
 
 RUN cd inngest \
   && go mod tidy \
-  && go generate ./...
+  && go generate ./... \
+  && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest ./cmd
 
-RUN --mount=type=cache,target=/root/.cache/go-build \
-  GOFLAGS=-mod=vendor GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest cmd/main.go
+# RUN --mount=type=cache,target=/root/.cache/go-build \
+#   GOFLAGS=-mod=vendor GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest cmd/main.go
 
 FROM alpine:3.23 AS inngest
 
