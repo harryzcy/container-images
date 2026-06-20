@@ -15,7 +15,7 @@ RUN apk add --no-cache make && \
   npm install --global corepack@latest && \
   corepack enable pnpm && \
   corepack use pnpm@latest-11 && \
-  cd ingest && \
+  cd inngest && \
   make build-ui
 
 FROM --platform=$BUILDPLATFORM library/golang:1.26.4-alpine3.23 AS build-backend
