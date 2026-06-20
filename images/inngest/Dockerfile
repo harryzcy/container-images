@@ -45,6 +45,8 @@ RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates && \
 COPY --from=build-backend --chown=nonroot /go/bin/inngest /bin/inngest
 COPY --from=clone --chown=nonroot /VERSION /VERSION
 
+USER nonroot
+
 # APIs and Dashboard: 8288
 # Connect WebSocket gateway: 8289
 EXPOSE 8288 8289
