@@ -3,7 +3,7 @@ FROM --platform=$BUILDPLATFORM library/golang:1.26.4-alpine3.23 AS build
 ARG TARGETARCH
 ARG TARGETOS
 
-RUN apk add build-base
+RUN apk add build-base git nodejs
 
 WORKDIR /app
 
