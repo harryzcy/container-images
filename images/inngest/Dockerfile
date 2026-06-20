@@ -18,7 +18,7 @@ COPY --from=clone /app/inngest ./inngest
 
 RUN apk add --no-cache make && \
   npm install --global corepack@latest && \
-  corepack prepare pnpm && \
+  corepack prepare pnpm --activate && \
   cd inngest && \
   make build-ui
 
