@@ -39,9 +39,11 @@ RUN cd inngest \
 
 FROM alpine:3.23 AS inngest
 
-RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
-COPY --from=build-backend /go/bin/inngest /bin/inngest
-COPY --from=clone /VERSION /VERSION
+RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates && \
+  addgroup -g 65532 nonroot && adduser -u 65532 -G nonroot -S nonroot
+
+COPY --from=build-backend --chown=nonroot /go/bin/inngest /bin/inngest
+COPY --from=clone --chown=nonroot /VERSION /VERSION
 
 # APIs and Dashboard: 8288
 # Connect WebSocket gateway: 8289
