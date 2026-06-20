@@ -46,4 +46,4 @@ RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
 COPY --from=build-backend /go/bin/inngest /bin/inngest
 COPY --from=clone /VERSION /VERSION
 
-CMD ["inngest"]
+CMD ["inngest", "start"]
