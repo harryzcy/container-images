@@ -1,10 +1,14 @@
 FROM --platform=$BUILDPLATFORM library/alpine:3.23 AS clone
 
+# renovate: datasource=git-tags depName=inngest packageName=https://github.com/inngest/inngest
+ENV VERSION="v1.30.0"
+
 WORKDIR /app
 
-RUN apk add --no-cache git && \
+RUN echo "${VERSION}" > /VERSION && \
+  apk add --no-cache git && \
   git config --global url."https://github.com/".insteadOf "git@github.com:" && \
-  git clone --recursive --depth 1 --branch v1.30.0 https://github.com/inngest/inngest.git
+  git clone --recursive --depth 1 --branch "${VERSION}" https://github.com/inngest/inngest.git
 
 FROM library/node:26.3.1-alpine3.23@sha256:bead114a5f13c3f193e6278d28bc10a3e0cd464cb1c764c1abac79b1cc15f64f AS build-frontend
 
@@ -40,5 +44,6 @@ FROM alpine:3.23 AS inngest
 
 RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates
 COPY --from=build-backend /go/bin/inngest /bin/inngest
+COPY --from=clone /VERSION /VERSION
 
 CMD ["inngest"]
