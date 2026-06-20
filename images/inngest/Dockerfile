@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM library/alpine:3.23 AS clone
+FROM --platform=$BUILDPLATFORM library/alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b AS clone
 
 # renovate: datasource=git-tags depName=inngest packageName=https://github.com/inngest/inngest
 ENV VERSION="v1.30.0"
@@ -10,7 +10,7 @@ RUN echo "${VERSION}" > /VERSION && \
   git config --global url."https://github.com/".insteadOf "git@github.com:" && \
   git clone --recursive --depth 1 --branch "${VERSION}" https://github.com/inngest/inngest.git
 
-FROM library/node:26.3.1-alpine3.23@sha256:bead114a5f13c3f193e6278d28bc10a3e0cd464cb1c764c1abac79b1cc15f64f AS build-frontend
+FROM library/node:26.3.1-alpine3.24@sha256:bead114a5f13c3f193e6278d28bc10a3e0cd464cb1c764c1abac79b1cc15f64f AS build-frontend
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ RUN apk add --no-cache make && \
   cd inngest && \
   make build-ui
 
-FROM --platform=$BUILDPLATFORM library/golang:1.26.4-alpine3.23 AS build-backend
+FROM --platform=$BUILDPLATFORM library/golang:1.26.4-alpine3.24 AS build-backend
 
 ARG TARGETARCH
 ARG TARGETOS
@@ -37,7 +37,7 @@ RUN cd inngest \
   && go generate ./... \
   && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest ./cmd
 
-FROM alpine:3.23 AS inngest
+FROM library/alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b AS inngest
 
 RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates && \
   addgroup -g 65532 nonroot && adduser -u 65532 -G nonroot -S nonroot
