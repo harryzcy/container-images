@@ -17,9 +17,9 @@ WORKDIR /app
 COPY --from=clone /app/inngest ./inngest
 
 RUN apk add --no-cache make && \
+  cd inngest && \
   npm install --global corepack@latest && \
   corepack prepare pnpm --activate && \
-  cd inngest && \
   make build-ui
 
 FROM --platform=$BUILDPLATFORM library/golang:1.26.4-alpine3.24 AS build-backend
