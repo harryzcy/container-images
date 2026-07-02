@@ -1,4 +1,4 @@
-FROM library/rust:1.96.0-alpine3.23@sha256:5dc2af9dd547c33f64d5fc1d299ab93b51f39eaa16c426c476b990ce6caf5b3e AS builder
+FROM library/rust:1.96.1-alpine3.24@sha256:a41f7740f8b45d45795624eec13a8b42263cc700f19f7e4e86e04d3dda08a479 AS builder
 
 # renovate: datasource=github-tags depName=typst packageName=typst/typst versioning=semver
 ENV VERSION="v0.15.0"
