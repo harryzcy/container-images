@@ -31,6 +31,4 @@ function determineMatrix(withPlatforms = false) {
   return matrix;
 }
 
-module.exports = () => {
-  return determineMatrix();
-};
+export default determineMatrix;
