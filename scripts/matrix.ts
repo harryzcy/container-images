@@ -1,6 +1,6 @@
 // const fs = require("fs");
-import * as fs from "fs";
-import * as path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 function determineMatrix(withPlatforms = false) {
   let imagesData;
