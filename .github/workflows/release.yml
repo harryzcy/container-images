@@ -180,6 +180,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.version }}
             type=semver,pattern={{major}},value=${{ steps.version.outputs.version }}
             type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Login to GitHub Container Registry
         if: steps.check.outputs.changed == 'true'
