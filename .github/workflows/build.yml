@@ -34,6 +34,7 @@ jobs:
         with:
           script: |
             const determineMatrix = await import('${{ github.workspace }}/scripts/matrix.ts')
+            console.log(determineMatrix, typeof determineMatrix)
             return determineMatrix()
 
   build:
