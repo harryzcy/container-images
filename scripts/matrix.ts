@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-function determineMatrix(withPlatforms = false) {
+export function determineMatrix(withPlatforms = false) {
   let imagesData;
   try {
     const imagesJson = fs.readFileSync(
@@ -31,5 +31,3 @@ function determineMatrix(withPlatforms = false) {
   console.log("Matrix:", matrix);
   return matrix;
 }
-
-export default determineMatrix;
