@@ -10,7 +10,8 @@ function determineMatrix(withPlatforms = false) {
       "utf8",
     );
     imagesData = JSON.parse(imagesJson);
-  } catch (err) {
+  } catch (error) {
+    const err = error as Error;
     throw new Error(`Failed to load or parse images.json: ${err.message}`);
   }
 
