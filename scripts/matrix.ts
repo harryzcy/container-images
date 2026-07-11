@@ -1,12 +1,13 @@
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+import * as fs from "fs";
+import * as path from "path";
 
 function determineMatrix(withPlatforms = false) {
   let imagesData;
   try {
     const imagesJson = fs.readFileSync(
       path.join(process.cwd(), "images.json"),
-      "utf8"
+      "utf8",
     );
     imagesData = JSON.parse(imagesJson);
   } catch (err) {
