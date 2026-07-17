@@ -1,15 +1,17 @@
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+import fs from "node:fs";
+import path from "node:path";
 
-function determineMatrix(withPlatforms = false) {
+export function determineMatrix(withPlatforms = false) {
   let imagesData;
   try {
     const imagesJson = fs.readFileSync(
       path.join(process.cwd(), "images.json"),
-      "utf8"
+      "utf8",
     );
     imagesData = JSON.parse(imagesJson);
-  } catch (err) {
+  } catch (error) {
+    const err = error as Error;
     throw new Error(`Failed to load or parse images.json: ${err.message}`);
   }
 
@@ -29,7 +31,3 @@ function determineMatrix(withPlatforms = false) {
   console.log("Matrix:", matrix);
   return matrix;
 }
-
-module.exports = () => {
-  return determineMatrix();
-};
