@@ -21,7 +21,7 @@ FROM library/node:26.5.1-alpine3.24@sha256:233761595746769ebfdb6090f44fc7cdf818a
 WORKDIR /app
 
 # renovate: datasource=npm depName=pnpm packageName=pnpm
-ENV PNPM_VERSION="11.19.0"
+ENV PNPM_VERSION="11.20.0"
 
 COPY --from=clone /app/homebox ./homebox
 
