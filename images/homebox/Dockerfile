@@ -20,8 +20,6 @@ FROM library/node:26.5.1-alpine3.24@sha256:233761595746769ebfdb6090f44fc7cdf818a
 
 WORKDIR /app
 
-# pinned: pnpm 11.20.0 can't delegate to the packageManager-declared pnpm 10.x
-# on musl, see https://github.com/pnpm/pnpm/issues/13622
 ENV PNPM_VERSION="11.19.0"
 
 COPY --from=clone /app/homebox ./homebox

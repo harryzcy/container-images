@@ -14,12 +14,14 @@ FROM library/node:26.5.1-alpine3.24@sha256:233761595746769ebfdb6090f44fc7cdf818a
 
 WORKDIR /app
 
+ENV PNPM_VERSION="11.19.0"
+
 COPY --from=clone /app/inngest ./inngest
 
 RUN apk add --no-cache make && \
   cd inngest && \
   npm install --global corepack@latest && \
-  corepack prepare pnpm --activate && \
+  corepack prepare "pnpm@$PNPM_VERSION" --activate && \
   make build-ui
 
 FROM --platform=$BUILDPLATFORM library/golang:1.26.5-alpine3.24@sha256:0178a641fbb4858c5f1b48e34bdaabe0350a330a1b1149aabd498d0699ff5fb2 AS build-backend
