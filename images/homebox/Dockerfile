@@ -20,13 +20,16 @@ FROM library/node:26.5.1-alpine3.24@sha256:233761595746769ebfdb6090f44fc7cdf818a
 
 WORKDIR /app
 
+# renovate: datasource=npm depName=pnpm packageName=pnpm
+ENV PNPM_VERSION="11.19.0"
+
 COPY --from=clone /app/homebox ./homebox
 
 RUN apk update && \
   apk upgrade && \
   # somehow build fails without git
   apk add --no-cache git && \
-  npm install -g pnpm && \
+  npm install -g "pnpm@$PNPM_VERSION" && \
   cd homebox/frontend && \
   pnpm install --frozen-lockfile && \
   pnpm build
