@@ -18,7 +18,7 @@
     {
       "matchDatasources": "docker",
       "matchPackageNames": [
-        "node"
+        "/(^|/)node$/"
       ],
       "matchFileNames": [
         "images/excalidraw/Dockerfile"
