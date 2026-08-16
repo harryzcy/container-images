@@ -1,22 +1,21 @@
 # Adapted from https://github.com/sysadminsmedia/homebox/blob/main/Dockerfile.rootless
 
-FROM library/node:26.7.0-alpine3.24@sha256:aadf416b2cdce311a8811ba3f0608a61b77dbf997500e2eafe781b51f6a0b019 AS clone
+FROM library/node:26.7.0-trixie-slim@sha256:4ebb5ace66f15a24c14c492e01a8beeed4fddf970a856109f5126e703e5fe503 AS clone
 
 WORKDIR /app
 
 # renovate: datasource=github-tags depName=homebox packageName=sysadminsmedia/homebox versioning=semver
 ENV VERSION="v0.26.2"
 
-RUN apk update && \
-  apk upgrade && \
-  apk add --no-cache git && \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  git ca-certificates && \
   git clone https://github.com/sysadminsmedia/homebox.git && \
   cd homebox && \
   git checkout "$VERSION" && \
   echo "$VERSION" > /VERSION && \
   git rev-parse --short HEAD > /COMMIT
 
-FROM library/node:26.7.0-alpine3.24@sha256:aadf416b2cdce311a8811ba3f0608a61b77dbf997500e2eafe781b51f6a0b019 AS frontend-builder
+FROM library/node:26.7.0-trixie-slim@sha256:4ebb5ace66f15a24c14c492e01a8beeed4fddf970a856109f5126e703e5fe503 AS frontend-builder
 
 WORKDIR /app
 
@@ -25,10 +24,9 @@ ENV PNPM_VERSION="11.19.0"
 
 COPY --from=clone /app/homebox ./homebox
 
-RUN apk update && \
-  apk upgrade && \
-  # somehow build fails without git
-  apk add --no-cache git && \
+# somehow build fails without git
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  git ca-certificates && \
   npm install -g "pnpm@$PNPM_VERSION" && \
   cd homebox/frontend && \
   pnpm install --frozen-lockfile && \
