@@ -25,7 +25,7 @@ RUN apk add --no-cache make && \
   corepack prepare "pnpm@$PNPM_VERSION" --activate && \
   make build-ui
 
-FROM --platform=$BUILDPLATFORM library/golang:1.26.6-alpine3.24@sha256:af8d6740070b8906d12eae1c3e3ea0957fb63f492051ea05e354c38ef9fe88df AS build-backend
+FROM --platform=$BUILDPLATFORM library/golang:1.26.6-alpine3.24@sha256:3889b425f035be855a72fb4755265311293b6d414521f0a519d819df32222d83 AS build-backend
 
 ARG TARGETARCH
 ARG TARGETOS
