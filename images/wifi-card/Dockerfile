@@ -1,6 +1,6 @@
 FROM library/node:26.7.0-trixie@sha256:40fd8249a701dab7431d15074ac4cf4f1c18eecd713807599cd76a7a6caad48b AS builder
 
-# renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card
+# renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card ref=master
 ENV VERSION="2ab81537fc2b4796395295c0765b6552cbe2e298"
 
 RUN apt-get update && apt-get install -y --no-install-recommends git

@@ -10,7 +10,17 @@
         "/(^|/)Dockerfile\\.[^/]*$/"
       ],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>[a-z-]+?)(?: depName=(?<depName>.+?))? packageName=(?<packageName>.+?)(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) [A-Z0-9_]*VERSION=\"(?<currentValue>.+?)\"\\s"
+        "# renovate: datasource=(?<datasource>[a-z-]+?)(?: depName=(?<depName>\\S+?))? packageName=(?<packageName>\\S+?)(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) [A-Z0-9_]*VERSION=\"(?<currentValue>.+?)\"\\s"
+      ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/|\\.)Dockerfile$/",
+        "/(^|/)Dockerfile\\.[^/]*$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+?)(?: depName=(?<depName>\\S+?))? packageName=(?<packageName>\\S+?) ref=(?<currentValue>\\S+?)\\s(?:ENV|ARG) [A-Z0-9_]*VERSION=\"(?<currentDigest>[0-9a-f]+?)\"\\s"
       ]
     }
   ],
