@@ -15,7 +15,7 @@ FROM library/node:26.8.1-alpine3.24@sha256:2d984a15c9b54fd0aeb608b8e0d0d83529eb3
 WORKDIR /app
 
 # renovate: datasource=npm depName=pnpm packageName=pnpm
-ENV PNPM_VERSION="11.24.0"
+ENV PNPM_VERSION="11.25.0"
 
 COPY --from=clone /app/inngest ./inngest
 
