@@ -29,12 +29,10 @@ RUN set -eu; \
   GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
   fetch "https://raw.githubusercontent.com/yt-dlp/yt-dlp/${VERSION}/public.key" -o public.key; \
   gpg --batch --import public.key; \
-  gpg --batch --with-colons --fingerprint | awk -F: '/^fpr:/ {print $10}' | grep -qx "$SIGNING_FINGERPRINT" \
-  || { echo "yt-dlp signing key does not match pinned fingerprint $SIGNING_FINGERPRINT" >&2; exit 1; }; \
   base="https://github.com/yt-dlp/yt-dlp/releases/download/${VERSION}"; \
   fetch "${base}/SHA2-256SUMS" -o SHA2-256SUMS; \
   fetch "${base}/SHA2-256SUMS.sig" -o SHA2-256SUMS.sig; \
-  gpg --batch --verify SHA2-256SUMS.sig SHA2-256SUMS; \
+  gpg --batch --assert-signer "$SIGNING_FINGERPRINT" --verify SHA2-256SUMS.sig SHA2-256SUMS; \
   fetch "${base}/${filename}" -o "$filename"; \
   grep " ${filename}\$" SHA2-256SUMS | sha256sum -c -; \
   install -m 0755 "$filename" /bin/yt-dlp; \
