@@ -1,9 +1,11 @@
 FROM library/node:22.23.2-trixie@sha256:2082d2bf902c8835655c6bcfee3594c00ea900498a9f6e2b96d3352536f9e8d8 AS build
 
-# renovate: datasource=github-tags depName=excalidraw packageName=excalidraw/excalidraw versioning=semver
+# renovate: datasource=github-tags depName=excalidraw packageName=excalidraw/excalidraw versioning=semver digest=commit
 ENV VERSION="v0.18.1"
+ENV COMMIT="a2ec2889babf7d2295469c6d90ebe77fae57df84"
 RUN echo "${VERSION}" > /VERSION && \
-  git clone --depth 1 --branch ${VERSION} https://github.com/excalidraw/excalidraw.git
+  git clone --depth 1 --branch "${VERSION}" https://github.com/excalidraw/excalidraw.git && \
+  test "$(git -C excalidraw rev-parse HEAD)" = "${COMMIT}"
 
 WORKDIR /excalidraw
 
