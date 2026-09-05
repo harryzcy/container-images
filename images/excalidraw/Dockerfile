@@ -9,7 +9,7 @@ RUN echo "${VERSION}" > /VERSION && \
 
 WORKDIR /excalidraw
 
-RUN yarn --network-timeout 600000 && \
+RUN yarn install --frozen-lockfile --network-timeout 600000 && \
   yarn build:app:docker
 
 FROM busybox:1.38.0@sha256:dc2d74b28e4cf8984fa52af1f39bc7c3d9c73760b41a74d629f5d11b1ab28616 AS health
