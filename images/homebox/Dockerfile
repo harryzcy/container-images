@@ -14,8 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   cd homebox && \
   test "$(git rev-parse HEAD)" = "$COMMIT" && \
   echo "$VERSION" > /VERSION && \
-  git rev-parse --short HEAD > /COMMIT && \
-  git log -1 --format=%cI > /BUILD_TIME
+  git rev-parse --short HEAD > /COMMIT
 
 FROM library/node:26.8.1-trixie-slim@sha256:c0753125a3789977aefe869cbebccf70e3cfd7ea84ca48547458f02e4f1d7146 AS frontend-builder
 
@@ -43,7 +42,6 @@ ARG TARGETARCH
 
 COPY --from=clone /COMMIT /COMMIT
 COPY --from=clone /VERSION /VERSION
-COPY --from=clone /BUILD_TIME /BUILD_TIME
 
 COPY --from=clone /app/homebox ./homebox
 RUN cd homebox/backend && go mod download
@@ -59,7 +57,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
   set -eu; \
   VERSION="$(cat /VERSION)"; \
   COMMIT="$(cat /COMMIT)"; \
-  BUILD_TIME="$(cat /BUILD_TIME)"; \
+  BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; \
   cd homebox/backend; \
   if [ "$TARGETARCH" = "arm" ] || [ "$TARGETARCH" = "riscv64" ]; \
   then echo "nodynamic" $TARGETOS $TARGETARCH; CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build \
