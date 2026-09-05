@@ -1,10 +1,12 @@
 FROM library/rust:1.98.0-alpine3.24@sha256:a10e64dd139b7387337c7fbe8aca31b959b57b2fd4c8ae20a02cf1d6ea424dce AS builder
 
-# renovate: datasource=github-tags depName=typst packageName=typst/typst versioning=semver
+# renovate: datasource=github-tags depName=typst packageName=typst/typst versioning=semver digest=commit
 ENV VERSION="v0.15.1"
+ENV COMMIT="9dfd3a08500b7896045f907433cf7b4b02434fad"
 
 RUN apk add --no-cache git \
-  && git clone --depth 1 --branch "${VERSION}" https://github.com/typst/typst.git
+  && git clone --depth 1 --branch "${VERSION}" https://github.com/typst/typst.git \
+  && test "$(git -C typst rev-parse HEAD)" = "${COMMIT}"
 
 WORKDIR /typst
 

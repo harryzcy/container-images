@@ -4,14 +4,16 @@ FROM library/node:26.8.1-trixie-slim@sha256:c0753125a3789977aefe869cbebccf70e3cf
 
 WORKDIR /app
 
-# renovate: datasource=github-tags depName=homebox packageName=sysadminsmedia/homebox versioning=semver
+# renovate: datasource=github-tags depName=homebox packageName=sysadminsmedia/homebox versioning=semver digest=commit
 ENV VERSION="v0.26.2"
+ENV COMMIT="e01dd737238a3fa7e1a6454b37de6c6fc88c86e4"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   git ca-certificates && \
   git clone https://github.com/sysadminsmedia/homebox.git && \
   cd homebox && \
   git checkout "$VERSION" && \
+  test "$(git rev-parse HEAD)" = "$COMMIT" && \
   echo "$VERSION" > /VERSION && \
   git rev-parse --short HEAD > /COMMIT
 
