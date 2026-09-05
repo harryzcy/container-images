@@ -1,5 +1,13 @@
 FROM debian:13.6@sha256:f324c7ff54321e8d9c588493a20244965938ce0aa50bbd1022d38010e9ffc4b1 AS builder
 
+ARG TARGETARCH
+
+# Upstream publishes no Linux aarch64 asset, so amd64 is the only supported target.
+RUN if [ "$TARGETARCH" != "amd64" ]; then \
+  echo "Unsupported architecture: $TARGETARCH" >&2; \
+  exit 1; \
+  fi
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl tar ca-certificates
 
