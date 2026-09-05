@@ -20,7 +20,7 @@ FROM ghcr.io/nginx/nginx-unprivileged:1.30@sha256:679387908ea95d6d8de12952cd15d6
 
 USER nginx
 
-COPY --from=builder --chown=nginx:nginx /wifi-card/build /usr/share/nginx/html
+COPY --from=builder --chown=nginx:nginx /wifi-card/dist /usr/share/nginx/html
 COPY --from=builder --chown=nginx:nginx /VERSION /VERSION
 COPY --from=health --chown=nginx:nginx /bin/wget /bin/
 
