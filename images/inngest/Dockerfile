@@ -18,12 +18,14 @@ WORKDIR /app
 
 # renovate: datasource=npm depName=pnpm packageName=pnpm
 ENV PNPM_VERSION="11.25.0"
+# renovate: datasource=npm depName=corepack packageName=corepack
+ENV COREPACK_VERSION="0.36.0"
 
 COPY --from=clone /app/inngest ./inngest
 
 RUN apk add --no-cache make && \
   cd inngest && \
-  npm install --global corepack@latest && \
+  npm install --global "corepack@$COREPACK_VERSION" && \
   corepack prepare "pnpm@$PNPM_VERSION" --activate && \
   make build-ui
 
@@ -34,10 +36,11 @@ ARG TARGETOS
 
 WORKDIR /app
 
+ENV GOFLAGS="-mod=vendor"
+
 COPY --from=build-frontend /app/inngest ./inngest
 
 RUN cd inngest \
-  && go mod tidy \
   && go generate ./... \
   && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest ./cmd
 
