@@ -10,12 +10,12 @@ ENV COMMIT="e01dd737238a3fa7e1a6454b37de6c6fc88c86e4"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   git ca-certificates && \
-  git clone https://github.com/sysadminsmedia/homebox.git && \
+  git clone --depth 1 --branch "$VERSION" https://github.com/sysadminsmedia/homebox.git && \
   cd homebox && \
-  git checkout "$VERSION" && \
   test "$(git rev-parse HEAD)" = "$COMMIT" && \
   echo "$VERSION" > /VERSION && \
-  git rev-parse --short HEAD > /COMMIT
+  git rev-parse --short HEAD > /COMMIT && \
+  git log -1 --format=%cI > /BUILD_TIME
 
 FROM library/node:26.8.1-trixie-slim@sha256:c0753125a3789977aefe869cbebccf70e3cfd7ea84ca48547458f02e4f1d7146 AS frontend-builder
 
@@ -43,10 +43,7 @@ ARG TARGETARCH
 
 COPY --from=clone /COMMIT /COMMIT
 COPY --from=clone /VERSION /VERSION
-
-RUN VERSION=$(cat /VERSION)
-RUN COMMIT=$(cat /COMMIT)
-RUN BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+COPY --from=clone /BUILD_TIME /BUILD_TIME
 
 COPY --from=clone /app/homebox ./homebox
 RUN cd homebox/backend && go mod download
@@ -56,11 +53,15 @@ RUN apk update && \
   apk add --no-cache git build-base gcc g++ && \
   if [ "$TARGETARCH" != "arm" ]; then apk --no-cache add libwebp libavif libheif libjxl; fi
 
-COPY --from=frontend-builder /app/homebox/frontend/.output/public ./app/homebox/backend/api/static/public
+COPY --from=frontend-builder /app/homebox/frontend/.output/public ./homebox/backend/app/api/static/public
 
 RUN --mount=type=cache,target=/root/.cache/go-build \
-  cd homebox/backend && \
-  if [ "$TARGETARCH" = "arm" ] || [ "$TARGETARCH" = "riscv64" ];  \
+  set -eu; \
+  VERSION="$(cat /VERSION)"; \
+  COMMIT="$(cat /COMMIT)"; \
+  BUILD_TIME="$(cat /BUILD_TIME)"; \
+  cd homebox/backend; \
+  if [ "$TARGETARCH" = "arm" ] || [ "$TARGETARCH" = "riscv64" ]; \
   then echo "nodynamic" $TARGETOS $TARGETARCH; CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build \
   -ldflags "-s -w -X main.commit=$COMMIT -X main.buildTime=$BUILD_TIME -X main.version=$VERSION" \
   -tags nodynamic -o /go/bin/api -v ./app/api/*.go; \
