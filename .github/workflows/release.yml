@@ -42,14 +42,33 @@ jobs:
           script: |
             const determineMatrix = require('./scripts/matrix.js')
             const withPlatforms = true
-            return determineMatrix(withPlatforms)
+
+            // Every platform is built natively on its own runner, so no QEMU.
+            const runners = {
+              'linux/amd64': 'ubuntu-24.04',
+              'linux/arm64': 'ubuntu-24.04-arm',
+            }
+
+            const { include } = determineMatrix(withPlatforms)
+            return {
+              include: include.flatMap(({ image, platforms }) =>
+                (platforms ?? Object.keys(runners).join(',')).split(',').map((entry) => {
+                  const platform = entry.trim()
+                  const runner = runners[platform]
+                  if (!runner) {
+                    throw new Error(`No runner configured for platform ${platform}`)
+                  }
+                  return { image, platform, runner }
+                })
+              ),
+            }
 
   pre-check:
     name: Pre Check
     runs-on: ubuntu-24.04
     needs: source-images
     strategy:
-      matrix: ${{ fromJSON(needs.source-images.outputs.matrix-platforms) }}
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
     outputs:
       excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
       homebox_changed: ${{ steps.check.outputs.homebox_changed }}
@@ -115,11 +134,133 @@ jobs:
             echo "${{ matrix.image }}_changed=false" >> $GITHUB_OUTPUT
           fi
 
-  release:
-    name: Release Docker images
-    runs-on: ubuntu-24.04
+  build:
+    name: Build ${{ matrix.image }} (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
     needs: [pre-check, source-images]
     permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix-platforms) }}
+    outputs:
+      excalidraw_version: ${{ steps.version.outputs.excalidraw_version }}
+      homebox_version: ${{ steps.version.outputs.homebox_version }}
+      inngest_version: ${{ steps.version.outputs.inngest_version }}
+      pypiserver_version: ${{ steps.version.outputs.pypiserver_version }}
+      resvg_version: ${{ steps.version.outputs.resvg_version }}
+      sally_version: ${{ steps.version.outputs.sally_version }}
+      typst_version: ${{ steps.version.outputs.typst_version }}
+      wifi-card_version: ${{ steps.version.outputs.wifi-card_version }}
+      yt-dlp_version: ${{ steps.version.outputs.yt-dlp_version }}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Check if image directory changed
+        id: check
+        run: |
+          echo '${{ toJSON(needs.pre-check.outputs) }}'
+          changed=$(echo '${{ toJSON(needs.pre-check.outputs) }}' | jq -r '."${{ matrix.image }}_changed"')
+          echo "changed: $changed"
+          echo "changed=${changed}" >> $GITHUB_OUTPUT
+
+      - name: Prepare
+        if: steps.check.outputs.changed == 'true'
+        env:
+          PLATFORM: ${{ matrix.platform }}
+        run: echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> $GITHUB_ENV
+
+      - name: Checkout
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+        if: steps.check.outputs.changed == 'true'
+
+      - name: Build
+        if: steps.check.outputs.changed == 'true'
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: images/${{ matrix.image }}
+          platforms: ${{ matrix.platform }}
+          push: false
+          load: true
+          tags: ${{ matrix.image }}:info
+
+      - name: Get version
+        id: version
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          docker create --name info ${{ matrix.image }}:info
+          docker cp info:/VERSION VERSION
+          version=$(cat VERSION)
+          rm VERSION
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "${{ matrix.image }}_version=${version}" >> $GITHUB_OUTPUT
+
+      - name: Docker meta
+        id: meta
+        if: steps.check.outputs.changed == 'true'
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ghcr.io/harryzcy/${{ matrix.image }}
+          tags: |
+            type=semver,pattern={{version}},value=${{ steps.version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.version }}
+            type=semver,pattern={{major}},value=${{ steps.version.outputs.version }}
+            type=sha,priority=300
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Login to GitHub Container Registry
+        if: steps.check.outputs.changed == 'true' && github.event_name == 'push'
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Pushed without a tag: the merge job assembles the per-platform digests
+      # into a single tagged manifest list.
+      - name: Build and push by digest
+        id: build
+        if: steps.check.outputs.changed == 'true'
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: images/${{ matrix.image }}
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          outputs: ${{ github.event_name == 'push' && format('type=image,name=ghcr.io/harryzcy/{0},push-by-digest=true,name-canonical=true,push=true', matrix.image) || 'type=cacheonly' }}
+
+      - name: Export digest
+        if: steps.check.outputs.changed == 'true' && github.event_name == 'push'
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          touch "${{ runner.temp }}/digests/${DIGEST#sha256:}"
+
+      - name: Upload digest
+        if: steps.check.outputs.changed == 'true' && github.event_name == 'push'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: digests-${{ matrix.image }}-${{ env.PLATFORM_PAIR }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    name: Release ${{ matrix.image }}
+    runs-on: ubuntu-24.04
+    needs: [pre-check, source-images, build]
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
       packages: write
       id-token: write
       attestations: write
@@ -141,41 +282,35 @@ jobs:
           echo "changed: $changed"
           echo "changed=${changed}" >> $GITHUB_OUTPUT
 
-      - name: Checkout
+      - name: Get version
+        id: version
         if: steps.check.outputs.changed == 'true'
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        run: |
+          version=$(echo '${{ toJSON(needs.build.outputs) }}' | jq -r '."${{ matrix.image }}_version"')
+          if [ -z "$version" ] || [ "$version" = "null" ]; then
+            echo "No version reported by the build jobs for ${{ matrix.image }}"
+            exit 1
+          fi
+          echo "version=${version}" >> $GITHUB_OUTPUT
 
-      - name: Set up QEMU
+      - name: Download digests
         if: steps.check.outputs.changed == 'true'
-        uses: docker/setup-qemu-action@1f40c72289eff860ee54a304f1438e3cff362e0a # v4.3.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-${{ matrix.image }}-*
+          merge-multiple: true
 
       - name: Set up Docker Buildx
         if: steps.check.outputs.changed == 'true'
         uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
 
-      - name: Build
-        if: steps.check.outputs.changed == 'true'
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
-        with:
-          context: images/${{ matrix.image }}
-          push: false
-          load: true
-          tags: ${{ matrix.image }}:info
-
-      - name: Get version
-        id: version
-        if: steps.check.outputs.changed == 'true'
-        run: |
-          docker create --name info ${{ matrix.image }}:info
-          docker cp info:/VERSION VERSION
-          version=$(cat VERSION)
-          rm VERSION
-          echo "version=${version}" >> $GITHUB_OUTPUT
-
       - name: Docker meta
         id: meta
         if: steps.check.outputs.changed == 'true'
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: index
         with:
           images: ghcr.io/harryzcy/${{ matrix.image }}
           tags: |
@@ -193,22 +328,51 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
-        id: build
+      - name: Create manifest list and push
+        id: push
         if: steps.check.outputs.changed == 'true'
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
-        with:
-          context: images/${{ matrix.image }}
-          platforms: ${{ github.event_name == 'push' && (matrix.platforms || 'linux/amd64,linux/arm64') || 'linux/amd64' }}
-          push: ${{ github.event_name == 'push' && steps.check.outputs.changed == 'true' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          annotations: ${{ steps.meta.outputs.annotations }}
+        working-directory: ${{ runner.temp }}/digests
+        env:
+          IMAGE: ghcr.io/harryzcy/${{ matrix.image }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+          ANNOTATIONS: ${{ steps.meta.outputs.annotations }}
+          VERSION_TAG: ${{ steps.meta.outputs.version }}
+        run: |
+          shopt -s nullglob
+          digests=(*)
+          if [ "${#digests[@]}" -eq 0 ]; then
+            echo "No digests found for ${IMAGE}"
+            exit 1
+          fi
+
+          args=()
+          while IFS= read -r tag; do
+            if [ -n "$tag" ]; then
+              args+=(--tag "$tag")
+            fi
+          done <<< "$TAGS"
+          while IFS= read -r annotation; do
+            if [ -n "$annotation" ]; then
+              args+=(--annotation "$annotation")
+            fi
+          done <<< "$ANNOTATIONS"
+          for digest in "${digests[@]}"; do
+            args+=("${IMAGE}@sha256:${digest}")
+          done
+
+          docker buildx imagetools create "${args[@]}"
+
+          digest=$(docker buildx imagetools inspect "${IMAGE}:${VERSION_TAG}" --format '{{json .Manifest}}' | jq -r '.digest')
+          if [ -z "$digest" ] || [ "$digest" = "null" ]; then
+            echo "No digest found for ${IMAGE}:${VERSION_TAG}"
+            exit 1
+          fi
+          echo "digest=${digest}" >> $GITHUB_OUTPUT
 
       - name: Attest build provenance
-        if: steps.check.outputs.changed == 'true' && github.event_name == 'push'
+        if: steps.check.outputs.changed == 'true'
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-name: ghcr.io/harryzcy/${{ matrix.image }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
