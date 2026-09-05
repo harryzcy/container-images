@@ -1,14 +1,16 @@
 FROM --platform=$BUILDPLATFORM library/alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b AS clone
 
-# renovate: datasource=git-tags depName=inngest packageName=https://github.com/inngest/inngest
+# renovate: datasource=github-tags depName=inngest packageName=inngest/inngest versioning=semver digest=commit
 ENV VERSION="v1.30.0"
+ENV COMMIT="6e8e348d0e02fe913727eb52d3355f3648e1913b"
 
 WORKDIR /app
 
 RUN echo "${VERSION}" > /VERSION && \
   apk add --no-cache git && \
   git config --global url."https://github.com/".insteadOf "git@github.com:" && \
-  git clone --recursive --depth 1 --branch "${VERSION}" https://github.com/inngest/inngest.git
+  git clone --recursive --depth 1 --branch "${VERSION}" https://github.com/inngest/inngest.git && \
+  test "$(git -C inngest rev-parse HEAD)" = "${COMMIT}"
 
 FROM library/node:26.8.1-alpine3.24@sha256:2d984a15c9b54fd0aeb608b8e0d0d83529eb34d2966db27a1fb4f1edc3d298a3 AS build-frontend
 
