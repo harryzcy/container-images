@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: source-images
     strategy:
-      matrix: ${{ fromJSON(needs.source-images.outputs.matrix-platforms) }}
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
     outputs:
       excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
       homebox_changed: ${{ steps.check.outputs.homebox_changed }}
@@ -126,7 +126,7 @@ jobs:
       artifact-metadata: write
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.source-images.outputs.matrix-platforms) }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
