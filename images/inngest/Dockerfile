@@ -17,7 +17,7 @@ FROM library/node:26.8.2-alpine3.24@sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874a
 WORKDIR /app
 
 # renovate: datasource=npm depName=pnpm packageName=pnpm
-ENV PNPM_VERSION="12.3.4"
+ENV PNPM_VERSION="12.4.0"
 # renovate: datasource=npm depName=corepack packageName=corepack
 ENV COREPACK_VERSION="0.36.0"
 
