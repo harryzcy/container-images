@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM library/alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b AS clone
+FROM --platform=$BUILDPLATFORM library/alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 AS clone
 
 # renovate: datasource=github-tags depName=inngest packageName=inngest/inngest versioning=semver digest=commit
 ENV VERSION="v1.44.0"
@@ -44,7 +44,7 @@ RUN cd inngest \
   && go generate ./... \
   && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /go/bin/inngest ./cmd
 
-FROM library/alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b AS inngest
+FROM library/alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 AS inngest
 
 RUN apk add --no-cache ca-certificates tzdata && update-ca-certificates && \
   addgroup -g 65532 nonroot && adduser -u 65532 -G nonroot -S nonroot
