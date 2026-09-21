@@ -1,8 +1,8 @@
 FROM --platform=$BUILDPLATFORM library/alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 AS clone
 
 # renovate: datasource=github-tags depName=inngest packageName=inngest/inngest versioning=semver digest=commit
-ENV VERSION="v1.44.0"
-ENV COMMIT="a54673a45b00ea10917620ab3e05a21d04579db7"
+ENV VERSION="v1.45.1"
+ENV COMMIT="9059f14a79317d977b627730a0f770b710520cc7"
 
 WORKDIR /app
 
