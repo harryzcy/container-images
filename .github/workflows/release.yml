@@ -72,7 +72,6 @@ jobs:
     outputs:
       excalidraw_changed: ${{ steps.check.outputs.excalidraw_changed }}
       homebox_changed: ${{ steps.check.outputs.homebox_changed }}
-      inngest_changed: ${{ steps.check.outputs.inngest_changed }}
       pypiserver_changed: ${{ steps.check.outputs.pypiserver_changed }}
       resvg_changed: ${{ steps.check.outputs.resvg_changed }}
       sally_changed: ${{ steps.check.outputs.sally_changed }}
@@ -147,7 +146,6 @@ jobs:
     outputs:
       excalidraw_version: ${{ steps.version.outputs.excalidraw_version }}
       homebox_version: ${{ steps.version.outputs.homebox_version }}
-      inngest_version: ${{ steps.version.outputs.inngest_version }}
       pypiserver_version: ${{ steps.version.outputs.pypiserver_version }}
       resvg_version: ${{ steps.version.outputs.resvg_version }}
       sally_version: ${{ steps.version.outputs.sally_version }}
