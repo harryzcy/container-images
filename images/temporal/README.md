@@ -16,7 +16,7 @@ docker run --network temporal -p 7233:7233 \
 
 The container runs `temporal-server start` by default. Configuration comes from the server's embedded config template, which reads environment variables. `temporal-sql-tool` is also included for setting up and upgrading the database schema.
 
-This image is a drop-in replacement for `temporalio/server`, so upstream's [compose examples](https://github.com/temporalio/samples-server/tree/main/compose) work with only the image name changed. It runs as `nonroot` (UID 65532) rather than upstream's UID 1000. SQLite is not supported in this image; for local development use `temporal server start-dev` from the [Temporal CLI](https://github.com/temporalio/cli).
+This image is a drop-in replacement for `temporalio/server`, so upstream's [compose examples](https://github.com/temporalio/samples-server/tree/main/compose) work with only the image name changed. It runs as `nonroot` (UID 65532) rather than upstream's UID 1000. SQLite (`DB=sqlite`) needs a writable working directory, since the database files are created there and the default `/etc/temporal` is read-only for `nonroot`.
 
 ## Schema setup
 
@@ -34,7 +34,7 @@ docker run --rm --network temporal -e SQL_PLUGIN=postgres12 -e SQL_HOST=postgres
 
 ## Environment variables
 
-  - `DB`: `postgres12`, `mysql8` or `cassandra` (default)
+  - `DB`: `postgres12`, `mysql8`, `sqlite` or `cassandra` (default)
   - `POSTGRES_SEEDS`, `POSTGRES_USER`, `POSTGRES_PWD`, `DB_PORT`: database connection
   - `DBNAME`, `VISIBILITY_DBNAME`: database names (default `temporal` and `temporal_visibility`)
   - `DYNAMIC_CONFIG_FILE_PATH`: dynamic config file (default `/etc/temporal/config/dynamicconfig/docker.yaml`, must exist)
