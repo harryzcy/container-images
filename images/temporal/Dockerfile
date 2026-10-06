@@ -45,5 +45,7 @@ USER nonroot
 # Frontend gRPC: 7233
 # Frontend HTTP: 7243
 EXPOSE 7233 7243
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD wget -q -O /dev/null "http://$(getent hosts "$(hostname)" | awk '{print $1}'):7243/api/v1/system-info" || exit 1
 
 CMD ["/etc/temporal/entrypoint.sh"]
