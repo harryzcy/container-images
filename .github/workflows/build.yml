@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: source-images
     strategy:
+      fail-fast: false
       matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
     steps:
       - name: Harden Runner
