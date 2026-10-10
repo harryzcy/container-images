@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: source-images
     strategy:
+      fail-fast: false
       matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
     steps:
       - name: Harden Runner
@@ -53,6 +54,13 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t ${{ matrix.image }} images/${{ matrix.image }}
+
+      - name: Scan image
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ matrix.image }}
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
 
       - name: Get version
         run: |
