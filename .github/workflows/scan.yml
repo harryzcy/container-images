@@ -11,7 +11,7 @@ permissions:
 jobs:
   source-images:
     name: Source Images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       matrix: ${{ steps.images.outputs.result }}
     steps:
@@ -35,7 +35,7 @@ jobs:
   # up under Security > Code scanning.
   scan:
     name: Scan ${{ matrix.image }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: source-images
     permissions:
       contents: read

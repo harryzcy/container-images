@@ -14,7 +14,7 @@ permissions:
 jobs:
   source-images:
     name: Source Images
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       matrix: ${{ steps.matrix.outputs.result }}
       matrix-platforms: ${{ steps.matrix-platforms.outputs.result }}
@@ -65,7 +65,7 @@ jobs:
 
   pre-check:
     name: Pre Check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: source-images
     strategy:
       matrix: ${{ fromJSON(needs.source-images.outputs.matrix) }}
@@ -256,7 +256,7 @@ jobs:
 
   merge:
     name: Release
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [pre-check, source-images, build]
     if: github.event_name == 'push'
     permissions:
