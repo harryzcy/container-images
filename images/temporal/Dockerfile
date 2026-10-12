@@ -1,8 +1,8 @@
 FROM --platform=$BUILDPLATFORM library/alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 AS clone
 
 # renovate: datasource=github-tags depName=temporal packageName=temporalio/temporal versioning=semver digest=commit
-ENV VERSION="v1.32.0"
-ENV COMMIT="d94e34a1ebba5410a2e7d07119a76896909591aa"
+ENV VERSION="v1.32.1"
+ENV COMMIT="af08a5e5f2dd40f545f2afac7780daaa6987001e"
 
 WORKDIR /app
 
