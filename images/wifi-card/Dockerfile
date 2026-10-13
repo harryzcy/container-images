@@ -1,7 +1,7 @@
 FROM library/node:26.11.1-trixie@sha256:32fa97f3363975684b08bf4e8a68a47c7905175cc20275b50b974bbd02aba731 AS builder
 
 # renovate: datasource=git-refs depName=wifi-card packageName=https://github.com/bndw/wifi-card ref=master
-ENV VERSION="a51f5d56684c0809ec7af4654dbb44d149c8e999"
+ENV VERSION="44a1b9aecdea5bf35c2ac23434121432ae5eee56"
 
 # node:26 ships no corepack. Upstream pins packageManager with a sha512, which
 # corepack verifies, so the yarn version needs no separate pin here.
