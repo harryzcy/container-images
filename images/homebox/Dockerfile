@@ -1,6 +1,6 @@
 # Adapted from https://github.com/sysadminsmedia/homebox/blob/main/Dockerfile.rootless
 
-FROM library/node:26.11.1-trixie-slim@sha256:193fe51b64e77981119c98c2002c9e32a70e2f006fb4d25068ce0558998917f0 AS clone
+FROM library/node:26.12.0-trixie-slim@sha256:0d1e33586362bb9e608c4e751e7a9e7edb55c9ac11461ed5666af696cc461dd4 AS clone
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   echo "$VERSION" > /VERSION && \
   git rev-parse --short HEAD > /COMMIT
 
-FROM library/node:26.11.1-trixie-slim@sha256:193fe51b64e77981119c98c2002c9e32a70e2f006fb4d25068ce0558998917f0 AS frontend-builder
+FROM library/node:26.12.0-trixie-slim@sha256:0d1e33586362bb9e608c4e751e7a9e7edb55c9ac11461ed5666af696cc461dd4 AS frontend-builder
 
 WORKDIR /app
 
