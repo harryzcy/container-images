@@ -24,7 +24,7 @@ RUN curl --fail --show-error --location --proto '=https' --tlsv1.2 --retry 3 --r
   && tar -xzf /tmp/resvg.tar.gz -C /bin/ \
   && rm /tmp/resvg.tar.gz
 
-FROM gcr.io/distroless/cc-debian13:nonroot@sha256:b7e81cb1af38d9345680e68bcf564d388f96304e25222030fc8c051faf8565b3
+FROM gcr.io/distroless/cc-debian13:nonroot@sha256:83b9b50586253821cf63ffcec87d3d94265a093ad30da232039af962dd8f4edf
 
 #checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
 
