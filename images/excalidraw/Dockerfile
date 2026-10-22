@@ -1,4 +1,4 @@
-FROM library/node:22.23.3-trixie@sha256:def2655045ff1ee91b28a48cb3ec84feafef6d128bda0ff6903e7847ed0b27b4 AS build
+FROM library/node:22.23.3-trixie@sha256:38b079b7c6272515bd435ca3d7bcb54b468db0cfdcc395829608569249836621 AS build
 
 # renovate: datasource=github-tags depName=excalidraw packageName=excalidraw/excalidraw versioning=semver digest=commit
 ENV VERSION="v0.18.1"
