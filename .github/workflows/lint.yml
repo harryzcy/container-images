@@ -17,12 +17,12 @@ permissions:
 jobs:
   super-linter:
     name: All
-    uses: harryzcy/github-actions/.github/workflows/linter.yml@b53d39412a62ade5c6757064576d72f2ea7e41e5 # main
+    uses: harryzcy/github-actions/.github/workflows/linter.yml@35957b2f1b0ab01fdbca00af3adbbbbdcb3fa5c2 # main
 
   spelling:
     name: Spelling
-    uses: harryzcy/github-actions/.github/workflows/spelling.yml@b53d39412a62ade5c6757064576d72f2ea7e41e5 # main
+    uses: harryzcy/github-actions/.github/workflows/spelling.yml@35957b2f1b0ab01fdbca00af3adbbbbdcb3fa5c2 # main
 
   renovate:
     name: Renovate
-    uses: harryzcy/github-actions/.github/workflows/renovate.yml@b53d39412a62ade5c6757064576d72f2ea7e41e5 # main
+    uses: harryzcy/github-actions/.github/workflows/renovate.yml@35957b2f1b0ab01fdbca00af3adbbbbdcb3fa5c2 # main
