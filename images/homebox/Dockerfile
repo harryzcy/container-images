@@ -21,7 +21,7 @@ FROM library/node:26.12.1-trixie-slim@sha256:36793bcbb160a6a16cede1e62b93f84e26b
 WORKDIR /app
 
 # renovate: datasource=npm depName=pnpm packageName=pnpm
-ENV PNPM_VERSION="12.14.0"
+ENV PNPM_VERSION="12.15.0"
 
 COPY --from=clone /app/homebox ./homebox
 
