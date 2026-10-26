@@ -5,8 +5,8 @@ FROM library/node:26.12.1-trixie-slim@sha256:36793bcbb160a6a16cede1e62b93f84e26b
 WORKDIR /app
 
 # renovate: datasource=github-tags depName=homebox packageName=sysadminsmedia/homebox versioning=semver digest=commit
-ENV VERSION="v0.27.0"
-ENV COMMIT="bae3fb4e9b84672e4e64da15e57a14217aea7c13"
+ENV VERSION="v0.27.1"
+ENV COMMIT="1fd28822634a3d5935c002d569559ef46530d4a0"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   git ca-certificates && \
