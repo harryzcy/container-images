@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # No upstream checksum file, so pin the asset digest; Renovate keeps it in sync.
 # renovate: datasource=github-release-attachments depName=resvg packageName=linebender/resvg versioning=semver digest=sha256
-ENV VERSION="v0.48.1"
-ENV SHA256="fa8c26495a187e592c501db15bf9e8a9fdc051d4b2b336b39703d5b59f912b9d"
+ENV VERSION="v0.49.0"
+ENV SHA256="216637e75e909e53e3098b0875cd5f7da2fdc8b4359771b4a29b539afff9d3f5"
 
 RUN echo "$VERSION" > /VERSION
 
