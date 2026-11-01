@@ -38,7 +38,7 @@ RUN set -eu; \
   install -m 0755 "$filename" /bin/yt-dlp; \
   rm -rf "$GNUPGHOME" public.key SHA2-256SUMS SHA2-256SUMS.sig "$filename"
 
-FROM gcr.io/distroless/base-nossl-debian13:nonroot@sha256:6a2a3346335b94d3be0732472245f42ca3ce3cc1135a9521a2bda4b677f2ef0d
+FROM gcr.io/distroless/base-nossl-debian13:nonroot@sha256:e6b0f82595aa1edde72c8054de7a9dca30f0f8f54820c37a167c0ddfc21c5c67
 
 #checkov:skip=CKV_DOCKER_2: no HEALTHCHECK
 
