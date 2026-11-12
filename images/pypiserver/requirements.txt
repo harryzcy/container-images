@@ -1,6 +1,6 @@
-pypiserver==2.4.2 \
-    --hash=sha256:131bc2a31ea1eab0e0104ace799dff139789b215465e3d326c65f56df5c160cb \
-    --hash=sha256:c8441d60bbd5f77f5647db8afa3a953e7c155ecd909eb1b6faf42bcc9477ee6a
+pypiserver==2.4.3 \
+    --hash=sha256:302737e7182fde89c120c6c53ae9602a55c8bd1449d9c4f364d00ffe602d4535 \
+    --hash=sha256:4ce26b6936f80c2b5c685df742dd268ff5ceeef9a3a724c281b0924afccfa806
 packaging==26.3 \
     --hash=sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79 \
     --hash=sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c
