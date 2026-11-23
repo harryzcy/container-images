@@ -14,7 +14,7 @@ RUN yarn install --frozen-lockfile --network-timeout 600000 && \
 
 FROM busybox:1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4 AS health
 
-FROM ghcr.io/nginx/nginx-unprivileged:1.31@sha256:0255fc1dcc1d7b358aac20166543e52029fea577413edadb0912f5b928c7e312
+FROM ghcr.io/nginx/nginx-unprivileged:1.31@sha256:4ac6145e433b1adc0880714fe3402680f5e599f1a264148253d6a94a4c000776
 
 USER nginx
 
