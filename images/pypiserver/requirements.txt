@@ -1,9 +1,9 @@
 pypiserver==2.4.3 \
     --hash=sha256:302737e7182fde89c120c6c53ae9602a55c8bd1449d9c4f364d00ffe602d4535 \
     --hash=sha256:4ce26b6936f80c2b5c685df742dd268ff5ceeef9a3a724c281b0924afccfa806
-packaging==26.3 \
-    --hash=sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79 \
-    --hash=sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c
+packaging==26.4 \
+    --hash=sha256:81383611a09c1bc0b08b76e0fd5829d7c6824c65b27a6aee339da133f4233ea2 \
+    --hash=sha256:c4b671c41ddb9bf26e543c37723610d28fb6bf7affc4da17cf048d419d2c062a
 legacy-cgi==2.6.4; python_version >= '3.13' \
     --hash=sha256:7e235ce58bf1e25d1fc9b2d299015e4e2cd37305eccafec1e6bac3fc04b878cd
 defusedxml==0.7.1 \
